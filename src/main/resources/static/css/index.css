@@ -1,0 +1,163 @@
+.layui-layout{
+    width: 100%;
+    height: 100%;
+}
+
+.layui-body{
+    bottom: 0 !important;
+    overflow-y: hidden;
+    background: #F5F7F9;
+    min-width:1437px;
+    position: absolute;
+}
+body .layui-form-search .layui-form-item .layui-input-inline{
+    width:190px;
+}
+.mystatus .layui-form-select .layui-input {
+    box-sizing: border-box;
+}
+
+/*左上角*/
+.layui-btn-add { margin-bottom:10px; display: block; }
+
+/*整个输入编辑项*/
+.layui-form-search { padding:10px; padding-left:0;  }
+
+/*表格容器样式*/
+.layui-table-inductionlist {  clear: both;  margin-right: 10px;  }
+
+/*label样式*/
+.layui-body  .layui-form-label{
+    width:auto;
+    padding:6px 10px;
+}
+/*日期选中样式*/
+body .layui-laydate .layui-this{
+    background-color: #2d8cf0!important;    /* background-color: #009688; */
+    border-radius:2px;
+}
+
+/*弹出框的样式*/
+body .layui-layer{
+    border-radius:6px;
+}
+body .layui-layer-btn .layui-layer-btn0{
+    border-radius:4px;
+}
+body .layui-layer-btn .layui-layer-btn1{
+    border-radius:4px;
+}
+body .layui-layer-title{
+    border-radius:6px 6px 0 0;
+}
+body .layui-layer-content{
+    border-radius:0 0 6px 6px;
+}
+/*当前的表单输入框样式*/
+.layui-body .layui-form-item{
+    margin-bottom:0;
+}
+.layui-top .layui-inline{
+    width: 220px;
+}
+.layui-icon.layui-tree-leaf{
+    display: none;
+}
+/*分布的位置*/
+body .layui-table-page{
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width:auto;
+    float: right;
+    padding: 7px 7px 0;
+    border-width: 1px 0 0;
+    height: 41px;
+    font-size: 12px;
+}
+.layui-icon.layui-tree-branch{
+    display: none;
+}
+
+.layui-form-search .layui-form-item .layui-input-inline{
+    width:210px;
+}
+/*部门的格式*/
+.department{
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    width: 248px;
+    border: 1px solid #B9B9B9;
+    border-radius:3px;"
+}
+
+.department-x{
+    position: absolute;
+    right:6px;
+    top:8px;
+    cursor:pointer;
+}
+
+body .layui-table th{
+    text-align: left;
+    font-weight: 700;
+}
+
+/*input*/
+body .layui-input{
+    display: inline-block;
+    width: 100%;
+    height: 32px;
+    line-height: 1.5;
+    padding: 4px 7px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    background-image: none;
+    position: relative;
+    cursor: text;
+    transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+}
+/*面包屑栏*/
+.admin-bdnav{
+    position: fixed;
+    height: 40px;
+    margin-left:10px;
+    line-height: 40px;
+}
+.rept{
+    position: relative;
+}
+.sure-fix{
+    position: absolute;
+    right:30px;
+    bottom:10px;
+    text-align: right;
+}
+.sure-fix button :first-child{
+    margin:0 10px;
+}
+.layui-body-container{
+    position: absolute;
+    bottom:40px;
+    left:5px;
+    right:10px;
+    top: 40px;
+    padding:10px;
+    padding-right:5px;
+    overflow-y: auto;
+}
+.required-color{
+    color: red;
+    margin-right: 5px;
+}
+.lf{
+    float: left;
+}
+.rt{
+    float: right;
+}
