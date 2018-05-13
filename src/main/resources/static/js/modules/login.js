@@ -31,7 +31,6 @@ layui.use(['element', 'form', 'layer'], function () {
         var password = params.password;
         var param = {"loginname": username, "password": password};
         $.post('doLogin',param,function (result) {
-            console.log(result);
             if(result.code == 0){
                 layer.msg("登录成功");
                 window.location.href = "index";

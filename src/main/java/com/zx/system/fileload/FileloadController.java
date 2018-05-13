@@ -64,7 +64,7 @@ public class FileloadController {
     }
 
     //删除线上文件
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileDelete", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult fileDelete(String path){
         if(!path.contains(Constant.UPLOAD_PATH_ORIGINAL)){
