@@ -12,30 +12,21 @@ import java.util.List;
 public class ConvertVideo {
 
     private static String inputPath = "";//待转码视频路径
-    private static String outputPath = "";
     private static String ffmpegPath = "";
 
     public static void main(String[] args) {
 
-        getPath("E:\\demo\\11111111111.mp4",
-                "E:\\demo\\ffmpeg",
-                "E:\\demo\\output");
-        if (!checkfile(inputPath)) {
-            System.out.println(inputPath + " is not file");
-            return;
-        }
-            process();
+        getRun("D:\\1234.rm", "D:\\ffmpeg");
     }
 
-    private static void getPath(String input, String ffmpeg, String output) {
+    private static void getPath(String input, String ffmpeg) {
         inputPath = input;
-        outputPath = output;
         ffmpegPath = ffmpeg;
     }
 
-    public static JsonResult getRun(String inputPath, String ffmegPath, String outputPath) {
-        System.out.println(inputPath + "  " + ffmegPath + " " + outputPath);
-        getPath(inputPath, ffmegPath, outputPath);
+    public static JsonResult getRun(String inputPath, String ffmegPath) {
+        System.out.println(inputPath + "  " + ffmegPath );
+        getPath(inputPath, ffmegPath);
         if (!checkfile(inputPath)) {
             System.out.println(inputPath + " is not file");
             return new JsonResult(400,"目标文件不存在");
@@ -52,8 +43,8 @@ public class ConvertVideo {
             status = processFLV(inputPath);//直接将文件转为flv文件
 
         } else if (type == 1) {
-            System.out.println("先转成avi");
-            String avifilepath = processAVI(type);
+
+            String avifilepath = processAVI();
             if (avifilepath == null) {
 
                 return new JsonResult(400,"avi文件没有得到");//avi文件没有得到
@@ -110,7 +101,8 @@ public class ConvertVideo {
     }
 
     //对ffmpeg无法解析匆文件格式（wmv9，rm,rmvb等，可以先用别的（moncoder）转换为avi）
-    private static String processAVI(int type) {
+    private static String processAVI() {
+        System.out.println("先转成avi");
         List<String> commend = new ArrayList<String>();
         commend.add(ffmpegPath + "\\mencoder");
         commend.add(inputPath);
@@ -125,12 +117,23 @@ public class ConvertVideo {
         commend.add("-of");
         commend.add("avi");
         commend.add("-o");
-        commend.add(outputPath + "\\a.avi");
+        String outurl = FileUtil.changeType(inputPath, "avi");
+        commend.add(outurl);
         try {
-            ProcessBuilder builder = new ProcessBuilder();
-            builder.command(commend);
-            builder.start();
-            return outputPath + "a.avi";
+            Process videoProcess = new ProcessBuilder(commend).redirectErrorStream(true).start();
+            new ClearOutput(videoProcess.getErrorStream()).start();
+            new ClearOutput(videoProcess.getInputStream()).start();
+            videoProcess.waitFor();
+            FileUtil.delFile(inputPath);
+            long startTime=System.currentTimeMillis();   //获取开始时间
+            int i = 0;
+            while(!checkfile(outurl)){
+                i++;
+            }
+            long endTime=System.currentTimeMillis(); //获取结束时间
+            System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
+            System.out.println("程序运行： "+i+"次");
+            return outurl;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -144,7 +147,6 @@ public class ConvertVideo {
     private static JsonResult processFLV(String oldfilepath) {
         if (!checkfile(oldfilepath)) {
             FileUtil.delFile(inputPath);
-            FileUtil.delFile(oldfilepath);
             System.out.println(oldfilepath + " is not file");
             return new JsonResult(400,"文件不存在");
         }

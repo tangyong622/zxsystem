@@ -17,6 +17,7 @@ public class FileUtil {
 
         return fileName.substring(0,fileName.lastIndexOf(".")+1)+type;
     }
+
     //删除文件
     public static void delFile(String path){
         File file=new File(path);

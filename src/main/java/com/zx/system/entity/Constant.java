@@ -13,11 +13,11 @@ public class Constant {
     //存储userid的key
     public final static String LOGIN_USER_ID = "LOGIN_USER_ID";
 
-    //存储原视频文件地址
-    public final static String UPLOAD_PATH_ORIGINAL = "static\\video1\\";
+    //视频转码器
+    public final static String VIDEO_FFMPEG = "ffmpeg\\";
 
     //存储原视频文件地址
-    public final static String UPLOAD_PATH_FlV = "static\\video2\\";
+    public final static String UPLOAD_PATH_ORIGINAL = "static\\original\\";
 
 
 }

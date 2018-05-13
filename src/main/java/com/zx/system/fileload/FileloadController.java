@@ -2,6 +2,7 @@ package com.zx.system.fileload;
 
 import com.zx.system.entity.Constant;
 import com.zx.system.ffmepg.ConvertVideo;
+import com.zx.system.util.FileUtil;
 import com.zx.system.util.JsonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,30 +43,36 @@ public class FileloadController {
                 if (!f.exists()) {
                     f.mkdirs();
                 }
-                File f2 = new File(Constant.UPLOAD_PATH_FlV);
-                if (!f2.exists()) {
-                    f2.mkdirs();
-                }
                 BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(Constant.UPLOAD_PATH_ORIGINAL + new File(resumeurl)));
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL+resumeurl,"E:\\demo\\ffmpeg",Constant.UPLOAD_PATH_FlV);
+                return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL+resumeurl,Constant.VIDEO_FFMPEG);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                return new JsonResult(2, 0, "上传失败," + e.getMessage(), 0);
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
             } catch (IOException e) {
                 e.printStackTrace();
-                return new JsonResult(2, 0, "上传失败," + e.getMessage(), 0);
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new JsonResult(2, 0, "上传失败," + e.getMessage(), 0);
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
             }
         } else {
-            return new JsonResult(2, "", "上传失败，因为文件是空的.", 0);
+            return new JsonResult(400, "", "上传失败，因为文件是空的.", 0);
         }
     }
 
+    //删除线上文件
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult fileDelete(String path){
+        if(!path.contains(Constant.UPLOAD_PATH_ORIGINAL)){
+            return new JsonResult(400,  "文件路劲不合法");
+        }
+        FileUtil.delFile(path);
+        return new JsonResult(0,  "删除成功");
+    }
 
 
 }
