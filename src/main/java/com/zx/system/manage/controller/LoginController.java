@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by Administrator on 2018/5/13/013.
  */
 @Controller
-@RequestMapping("/sys")
+@RequestMapping("/manage/sys")
 public class LoginController {
 
     @Autowired
