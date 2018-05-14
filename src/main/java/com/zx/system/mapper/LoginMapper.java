@@ -12,7 +12,7 @@ import java.util.List;
 public interface LoginMapper extends Mapper{
 
     //查询用户
-    SysUser getUser(@Param("name") String name, @Param("password") String password);
+    SysUser getUser(@Param("loginname") String loginname, @Param("password") String password);
 
     //修改登录时间
     Integer updateLoginTime(@Param("id") String id);

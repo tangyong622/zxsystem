@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>致享-管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body style="overflow: hidden">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="nav" id="menus">
+                <li class='layui-nav-item'>
+                    <a href='javascript:;' data-url='manage/sys/index'>首页</a>
+                </li>
+                <li class='layui-nav-item'>
+                    <a href='javascript:;' data-url=''>账户管理</a>
+                    <dl class='layui-nav-child'>
+                        <dd><a href='javascript:;' data-url='manage/user/findList'>用户列表</a></dd>
+                    </dl>
+                </li>
+                <li class='layui-nav-item'>
+                    <a href='javascript:;' data-url=''>课件管理</a>
+                    <dl class='layui-nav-child'>
+                        <dd><a href='javascript:;' data-url='manage/course/category'>分类管理</a></dd>
+                        <dd><a href='javascript:;' data-url='manage/course/firstTitle'>一级标题</a></dd>
+                        <dd><a href='javascript:;' data-url='manage/course/secondTitle'>二级标题</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="admin-bdnav">
+                <span class="layui-breadcrumb">
+                        <a href="javascript:;">首页</a>
+                </span>
+        </div>
+        <div class="layui-body-container"style="background-color: #fff;border-radius:5px;" >
+            <!-- 动态添加内容-->
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-1.8.3.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/js/modules/index.js"></script>
+</body>
+</html>

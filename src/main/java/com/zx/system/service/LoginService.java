@@ -1,4 +1,4 @@
-package com.zx.system.manage.service;
+package com.zx.system.service;
 
 import com.zx.system.entity.Constant;
 import com.zx.system.entity.SysUser;

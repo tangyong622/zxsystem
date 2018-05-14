@@ -8,7 +8,7 @@ import com.zx.system.cache.CacheManager;
  */
 public class TokenUtils {
 
-    public JsonResult getCache(String key){
+    public static JsonResult getCache(String key){
 
         Cache cache = CacheManager.getCache(key);
         if(cache == null){

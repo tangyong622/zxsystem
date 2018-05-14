@@ -1,5 +1,8 @@
 package com.zx.system.config;
 
+import com.zx.system.util.JsonResult;
+import com.zx.system.util.StringUtils;
+import com.zx.system.util.TokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,13 +25,16 @@ public class ShopInterceptor implements HandlerInterceptor {
         logger.info("------preHandle------");
         //获取session
         String token = request.getHeader("token");
-        //判断用户ID是否存在，不存在就跳转到登录界面
-        if(token == null){
+        if(StringUtils.isEmpty(token)){
             logger.info("------:没有登录信息");
             return false;
-        }else{
-            return true;
         }
+        JsonResult result = TokenUtils.getCache(token);
+        if(result.getCode() != 0){
+            logger.info("------:"+result.getMsg());
+            return false;
+        }
+        return true;
     }
 
     @Override

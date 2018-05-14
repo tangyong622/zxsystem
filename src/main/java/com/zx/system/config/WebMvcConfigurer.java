@@ -14,9 +14,9 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //后台管理端
-        registry.addInterceptor(new ManageInterceptor()).addPathPatterns("/manage/**");
+        registry.addInterceptor(new ManageInterceptor()).addPathPatterns("/manage/**").excludePathPatterns("/manage/sys/login");
         //前台用户端
-        registry.addInterceptor(new ShopInterceptor()).addPathPatterns("/shop/**");
+        registry.addInterceptor(new ShopInterceptor()).addPathPatterns("/shop/**").excludePathPatterns("/shop/sys/login");
         super.addInterceptors(registry);
     }
 }
