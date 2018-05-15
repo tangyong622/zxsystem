@@ -52,6 +52,7 @@ layui.config({
     };
 
     function ajaxhtml(url) {
+        console.log(url)
         $layui_body_container = $('.layui-body-container')
         $layui_body_container.html("");
         if (url === "" || undefined) return;

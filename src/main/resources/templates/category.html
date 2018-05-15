@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分类管理</title>
+</head>
+<body>
+<div class="layui-btn-add">
+    <button class="layui-btn" id="add">添加分类</button>
+</div>
+<div class="layui-table-fulltimelist">
+    <table class="layui-hide" id="category-manage" lay-filter="category"></table>
+</div>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+</script>
+<script type="text/html" id="addHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="wishSalary" name="sort" maxlength="8"
+                           placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="name" placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script type="text/html" id="editHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name" value="{{d.name}}"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="wishSalary" name="sort" value="{{d.sort}}"
+                           maxlength="8" placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="name" value="{{d.remark}}"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['form', 'table', 'layer', 'laytpl'], function () {
+        var form = layui.form,
+            table = layui.table,
+            laytpl = layui.laytpl;
+
+        form.verify({
+            wishSalary: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
+        });
+
+        //  初始化分类管理列表
+        var categorytable = table.render({
+            elem: '#category-manage',
+            url: 'manage/course/category/findList',
+            page: 'true',
+            cols: [[
+                {field: 'name', title: '名称'},
+                {field: 'sort', title: '排序'},
+                {field: 'remark', title: '备注'},
+                {title: '操作', align: 'center', toolbar: '#operation'}
+            ]],
+            id: 'category'
+        })
+
+        table.on('tool(resume)', function (obj) {
+            var data = obj.data;
+            if (obj.event == "delete") {
+                layer.confirm('确定删除该分类？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    var params = {
+                        id: id,
+                        status: 6
+                    };
+                    $.post('manage/course/category/delete', {id: data.id}, function (res) {
+                        if (res.code === 0) {
+                            obj.del();
+                            layer.msg('删除信息成功！')
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    })
+                }, function () {
+                })
+            }
+            else if (obj.event == "edit") {
+                var editpage = editHtml.innerHTML;
+                laytpl(editpage).render(data, function (html) {
+                    layer.open({
+                        type: 1,
+                        title: '修改分类信息',
+                        content: html,
+                        area: ['800px', '720px']
+                    });
+                });
+
+                form.on('submit(entry)', function (obj) {
+                    params = obj.field;
+                    params.id = data.id;
+                    $.post('manage/course/category/form', params, function (result) {
+                        if (result.code === 0) {
+                            categorytable.reload();
+                            layer.msg(result.msg);
+                            layer.closeAll();
+                        } else {
+                            layer.msg(result.msg);
+                            return false;
+                        }
+                    });
+                    return false;
+                })
+                $('#cancel').on('click', function (e) {
+                    e.preventDefault();
+                    layer.closeAll();
+                })
+                form.render();
+            }
+        })
+
+        $('#add').on('click', function (e) {
+            var addpage = addHtml.innerHTML;
+            var layindex = layer.open({
+                type: 1,
+                title: '添加分类',
+                content: addpage,
+                area: ['800px', '720px']
+            });
+            form.on('submit(entry)', function (obj) {
+                params = obj.field;
+                $.post('manage/course/category/form', params, function (result) {
+                    if (result.code === 0) {
+                        categorytable.reload();
+                        layer.msg(result.msg);
+                        layer.closeAll();
+                    } else {
+                        layer.msg(result.msg);
+                        return false;
+                    }
+                });
+                return false;
+            })
+            $('#cancel').on('click', function (e) {
+                e.preventDefault();
+                layer.closeAll();
+            })
+            form.render();
+        })
+
+    })
+</script>
+</body>
+</html>

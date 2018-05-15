@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.system.mapper.CategoryMapper">
+
+    <!--查看总数-->
+    <select id="findListCount" resultType="Integer">
+        SELECT COUNT(0) FROM category WHERE delFlag != '0'
+    </select>
+
+    <!--查看列表-->
+    <select id="findList" resultType="com.zx.system.entity.Category">
+        SELECT id,name,sort,remark FROM category
+        WHERE delFlag != '0'
+        ORDER BY sort
+    </select>
+
+    <!--检查是否存在-->
+    <select id="checkExist" resultType="Integer">
+        SELECT COUNT(0) FROM category
+        WHERE delFlag != '0'
+        <if test="id != null and id != ''">
+            AND id != #{id}
+        </if>
+        AND name = #{name}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO category (id,name,sort,remark,delFlag,addUserId,addTime)
+        VALUE (#{id},#{name},#{sort},#{remark},#{delFlag},#{addUserId},#{addTime})
+    </insert>
+
+    <update id="update">
+        UPDATE category SET
+        name = #{name},
+        sort = #{sort},
+        remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <!--检查是否存在课时-->
+    <select id="checkHas" resultType="Integer">
+        SELECT COUNT(a.id) FROM first_title a
+        WHERE a.delFlag != '0'
+        AND a.categoryId = #{id}
+    </select>
+
+    <!--删除分类-->
+    <update id="delete">
+        UPDATE category SET delFlag = 1 WHERE id = #{id}
+    </update>
+
+
+</mapper>
