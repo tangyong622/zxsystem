@@ -1,6 +1,6 @@
-package com.zx.system.controller;
+package com.zx.system.manage.controller;
 
-import com.zx.system.service.LoginService;
+import com.zx.system.manage.service.LoginService;
 import com.zx.system.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -4,6 +4,7 @@ import com.zx.system.entity.Constant;
 import com.zx.system.ffmepg.ConvertVideo;
 import com.zx.system.util.FileUtil;
 import com.zx.system.util.JsonResult;
+import com.zx.system.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,8 +33,8 @@ public class FileloadController {
             String resumeurl = "";
             try {
                 //重新生成文件名，避免乱码问题
-                String filename=file.getOriginalFilename();
-                String fName=null;
+                String filename = file.getOriginalFilename();
+                String fName = null;
                 if (filename.indexOf(".") >= 0) {
                     fName = filename.substring(filename.lastIndexOf("."), filename.length());
                 }
@@ -47,7 +48,10 @@ public class FileloadController {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL+resumeurl,Constant.VIDEO_FFMPEG);
+                if (StringUtils.equals("flv", FileUtil.getType(fName))) {
+                    return new JsonResult(0, Constant.UPLOAD_PATH_ORIGINAL + resumeurl);
+                }
+                return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL + resumeurl, Constant.VIDEO_FFMPEG);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
@@ -66,12 +70,12 @@ public class FileloadController {
     //删除线上文件
     @RequestMapping(value = "/fileDelete", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult fileDelete(String path){
-        if(!path.contains(Constant.UPLOAD_PATH_ORIGINAL)){
-            return new JsonResult(400,  "文件路劲不合法");
+    public JsonResult fileDelete(String path) {
+        if (!path.contains(Constant.UPLOAD_PATH_ORIGINAL)) {
+            return new JsonResult(400, "文件路劲不合法");
         }
         FileUtil.delFile(path);
-        return new JsonResult(0,  "删除成功");
+        return new JsonResult(0, "删除成功");
     }
 
 

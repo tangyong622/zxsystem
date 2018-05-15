@@ -1,9 +1,10 @@
-package com.zx.system.service;
+package com.zx.system.manage.service;
 
 import com.zx.system.entity.Constant;
 import com.zx.system.entity.SysUser;
 import com.zx.system.mapper.LoginMapper;
 import com.zx.system.util.JsonResult;
+import com.zx.system.util.MD5Tools;
 import com.zx.system.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,10 @@ public class LoginService {
 
     //登录请求
     public JsonResult doLogin(String loginname, String password) {
+
+        String pawDES = MD5Tools.getSHA256StrJava(password);
         //查询用户
-        SysUser sysUser = loginMapper.getUser(loginname,password);
+        SysUser sysUser = loginMapper.getUser(loginname,pawDES);
         if(sysUser == null){
             return new JsonResult(400,"用户名或密码错误");
         }

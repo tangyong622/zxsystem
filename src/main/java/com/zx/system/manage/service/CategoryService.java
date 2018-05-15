@@ -1,4 +1,4 @@
-package com.zx.system.service;
+package com.zx.system.manage.service;
 
 import com.zx.system.entity.Category;
 import com.zx.system.mapper.CategoryMapper;
