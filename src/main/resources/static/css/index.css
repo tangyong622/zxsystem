@@ -6,6 +6,7 @@
 .layui-body{
     bottom: 0 !important;
     overflow-y: hidden;
+    top:0 !important;
     background: #F5F7F9;
     min-width:1437px;
     position: absolute;
@@ -16,7 +17,9 @@ body .layui-form-search .layui-form-item .layui-input-inline{
 .mystatus .layui-form-select .layui-input {
     box-sizing: border-box;
 }
-
+.layui-side{
+    top:0!important;
+}
 /*左上角*/
 .layui-btn-add { margin-bottom:10px; display: block; }
 

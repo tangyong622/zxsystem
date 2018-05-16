@@ -8,7 +8,7 @@
 <div class="layui-btn-add">
     <button class="layui-btn" id="add">添加分类</button>
 </div>
-<div class="layui-table-fulltimelist">
+<div class="layui-table-fulltimelist" style="margin-top:0px;">
     <table class="layui-hide" id="category-manage" lay-filter="category"></table>
 </div>
 <script type="text/html" id="operation">
@@ -30,7 +30,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">排序：</label>
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input" lay-verify="wishSalary" name="sort" maxlength="8"
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" maxlength="8"
                            placeholder="请填写排序">
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">备注：</label>
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input" name="name" placeholder="请填写名称">
+                    <input type="text" class="layui-input" name="remark" placeholder="请填写名称">
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">排序：</label>
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input" lay-verify="wishSalary" name="sort" value="{{d.sort}}"
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" value="{{d.sort}}"
                            maxlength="8" placeholder="请填写排序">
                 </div>
             </div>
@@ -73,8 +73,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">备注：</label>
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input" name="name" value="{{d.remark}}"
-                           placeholder="请填写名称">
+                    <input type="text" class="layui-input" name="remark" value="{{d.remark != undefined ? d.remark : ''}}"
+                           placeholder="请填写备注">
                 </div>
             </div>
         </div>
@@ -88,27 +88,28 @@
     layui.use(['form', 'table', 'layer', 'laytpl'], function () {
         var form = layui.form,
             table = layui.table,
+            layer = layui.layer,
             laytpl = layui.laytpl;
 
         form.verify({
-            wishSalary: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
+            sort: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
         });
 
         //  初始化分类管理列表
         var categorytable = table.render({
             elem: '#category-manage',
-            url: 'manage/course/category/findList',
+            url: '/manage/category/findList',
             page: 'true',
+            limit:'10',
             cols: [[
-                {field: 'name', title: '名称'},
+                {field: 'name', title: '模板名称'},
                 {field: 'sort', title: '排序'},
                 {field: 'remark', title: '备注'},
-                {title: '操作', align: 'center', toolbar: '#operation'}
-            ]],
-            id: 'category'
-        })
+                {title: '操作',width: 200, align: 'center', toolbar: '#operation'}
+            ]]
+        });
 
-        table.on('tool(resume)', function (obj) {
+        table.on('tool(category)', function (obj) {
             var data = obj.data;
             if (obj.event == "delete") {
                 layer.confirm('确定删除该分类？', {
@@ -118,7 +119,7 @@
                         id: id,
                         status: 6
                     };
-                    $.post('manage/course/category/delete', {id: data.id}, function (res) {
+                    $.post('/manage/category/delete', {id: data.id}, function (res) {
                         if (res.code === 0) {
                             obj.del();
                             layer.msg('删除信息成功！')
@@ -136,17 +137,17 @@
                         type: 1,
                         title: '修改分类信息',
                         content: html,
-                        area: ['800px', '720px']
+                        area: ['400px', '400px']
                     });
                 });
 
                 form.on('submit(entry)', function (obj) {
-                    params = obj.field;
+                    var params = obj.field;
                     params.id = data.id;
-                    $.post('manage/course/category/form', params, function (result) {
+                    $.post('/manage/category/form', params, function (result) {
                         if (result.code === 0) {
                             categorytable.reload();
-                            layer.msg(result.msg);
+                            layer.msg("修改分类成功");
                             layer.closeAll();
                         } else {
                             layer.msg(result.msg);
@@ -169,14 +170,13 @@
                 type: 1,
                 title: '添加分类',
                 content: addpage,
-                area: ['800px', '720px']
+                area: ['400px', '400px']
             });
             form.on('submit(entry)', function (obj) {
-                params = obj.field;
-                $.post('manage/course/category/form', params, function (result) {
+                var params = obj.field;
+                $.post('/manage/category/form', params, function (result) {
                     if (result.code === 0) {
                         categorytable.reload();
-                        layer.msg(result.msg);
                         layer.closeAll();
                     } else {
                         layer.msg(result.msg);

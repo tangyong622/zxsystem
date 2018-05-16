@@ -1,8 +1,8 @@
 package com.zx.system.manage.controller;
 
-import com.zx.system.manage.service.LoginService;
 import com.zx.system.util.JsonResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/manage/sys")
 public class LoginController {
 
-    @Autowired
-    private LoginService loginService;
-
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(){
 
@@ -28,8 +25,14 @@ public class LoginController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult doLogin(String loginname,String password){
-
-        return loginService.doLogin(loginname,password);
+        try {
+            UsernamePasswordToken token = new UsernamePasswordToken(loginname, password);
+            SecurityUtils.getSubject().login(token);
+            return new JsonResult(0,"登录成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(400,"用户名或密码错误");
+        }
     }
 
     @RequestMapping(value = "/index")

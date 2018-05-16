@@ -31,17 +31,13 @@ public class ShiroConfig {
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/EmployeeSystem/login.htmls");
-        // 未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-
+        shiroFilterFactoryBean.setLoginUrl("/manage/sys/login");
         // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/plugins/layui/**", "anon");
-
+        filterChainDefinitionMap.put("/manage/sys/login", "anon");
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/manage/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;

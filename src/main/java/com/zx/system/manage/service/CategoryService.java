@@ -21,35 +21,44 @@ public class CategoryService {
     public JsonResult findList(Category category) {
         //查看总数
         int count = categoryMapper.findListCount(category);
-        if(count > 0){
-            return new JsonResult(0,categoryMapper.findList(category),"分类列表",count);
+        if (count > 0) {
+            Integer page = category.getPage();
+            if (page == null) {
+                page = 1;
+            }
+            Integer limit = category.getLimit();
+            if (limit == null) {
+                limit = 10;
+            }
+            category.setPage((page - 1) * 30);
+            return new JsonResult(0, categoryMapper.findList(category), "分类列表", count);
         }
-        return new JsonResult(400,"暂无数据");
+        return new JsonResult(400, "暂无数据");
     }
 
     //编辑分类
     public JsonResult form(Category category) {
         //检查是否存在
-        if(categoryMapper.checkExist(category)>0){
-            return new JsonResult(400,"该名称已存在");
+        if (categoryMapper.checkExist(category) > 0) {
+            return new JsonResult(400, "该名称已存在");
         }
-        if(StringUtils.isEmpty(category.getId())){//新增
+        if (StringUtils.isEmpty(category.getId())) {//新增
             category.insert();
             categoryMapper.insert(category);
-        }else{
+        } else {
             category.update();
             categoryMapper.update(category);
         }
-        return new JsonResult(400,"编辑分类成功");
+        return new JsonResult(0, "编辑分类成功");
     }
 
     //删除分类
     public JsonResult delete(Category category) {
         //检查是否存在课时
-        if(categoryMapper.checkHas(category)>0){
-            return new JsonResult(400,"该名称已存在");
+        if (categoryMapper.checkHas(category) > 0) {
+            return new JsonResult(400, "该名称已存在");
         }
         categoryMapper.delete(category.getId());
-        return new JsonResult(400,"删除分类成功");
+        return new JsonResult(400, "删除分类成功");
     }
 }

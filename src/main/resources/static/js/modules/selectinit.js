@@ -218,7 +218,7 @@ layui.define('layer',function(exports){
         systemcompanyoption:function(data,isall){
             var optionstr = "<option value=''>请选择</option>";
             for (var i = 0; i < data.length; i++) {
-                var optionone="<option value='"+data[i].name+"'>"+data[i].name+"</option>"
+                var optionone="<option data-id='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>"
                 optionstr+=optionone;
             }
             return optionstr;
@@ -240,6 +240,112 @@ layui.define('layer',function(exports){
                 form.render('select');
             });
         },
+        // 岗位职级
+        stationrankoption:function(data,isall){
+            var optionstr = "<option value=''>请选择</option>";
+            for (var i = 0; i < data.length; i++) {
+                var optionone="<option value='"+data[i]+"'>"+data[i]+"</option>"
+                optionstr+=optionone;
+            }
+            return optionstr;
+        },
+        // 填充岗位职级
+        selectstationrank:function($dept,url,param,form,username){
+            $.get(url,param,function(data){
+                var dataoption=data.data;
+                var optionstr= selectObj.stationrankoption(dataoption);
+                $dept.empty();
+                $dept.append(optionstr);
+                if(username!=undefined){
+                    $dept.find('option').each(function(){
+                        if($(this).val()==username){
+                            $(this).attr('selected',true);
+                        }
+                    });
+                }
+                form.render('select');
+            });
+        },
+        // 职级序列
+        rankstationoption:function(data,isall){
+            var optionstr = "<option value=''>请选择</option>";
+            for (var i = 0; i < data.length; i++) {
+                var optionone="<option value='"+data[i].id+"'>"+data[i].name+"</option>"
+                optionstr+=optionone;
+            }
+            return optionstr;
+        },
+        // 填充职级序列
+        selectrankstation:function($dept,url,param,form,username){
+            $.get(url,param,function(data){
+                var dataoption=data.data;
+                var optionstr= selectObj.rankstationoption(dataoption);
+                $dept.empty();
+                $dept.append(optionstr);
+                if(username!=undefined){
+                    $dept.find('option').each(function(){
+                        if($(this).val()==username){
+                            $(this).attr('selected',true);
+                        }
+                    });
+                }
+                form.render('select');
+            });
+        },
+        // 办公地点
+        addressoption:function(data,isall){
+            var optionstr = "<option value=''>请选择</option>";
+            for (var i = 0; i < data.length; i++) {
+                var optionone="<option value='"+data[i].id+"'>"+data[i].name+"</option>"
+                optionstr+=optionone;
+            }
+            return optionstr;
+        },
+        // 填充办公地点
+        selectaddressstation:function($dept,url,param,form,username){
+            $.get(url,param,function(data){
+                var dataoption=data.data;
+                var optionstr= selectObj.addressoption(dataoption);
+                $dept.empty();
+                $dept.append(optionstr);
+                if(username!=undefined){
+                    $dept.find('option').each(function(){
+                        if($(this).val()==username){
+                            $(this).attr('selected',true);
+                        }
+                    });
+                }
+                form.render('select');
+            });
+        },
+
+        // 数据字段
+        dictoption:function(data,isall){
+            var optionstr = "<option value=''>请选择</option>";
+            for (var i = 0; i < data.length; i++) {
+                var optionone="<option value='"+data[i].value+"'>"+data[i].label+"</option>"
+                optionstr+=optionone;
+            }
+            return optionstr;
+        },
+        // 填充数据字段
+        selectdicttation:function($dept,url,param,form,username){
+            $.get(url,param,function(data){
+                var dataoption=data;
+                var optionstr= selectObj.dictoption(dataoption);
+                $dept.empty();
+                $dept.append(optionstr);
+                if(username!=undefined){
+                    $dept.find('option').each(function(){
+                        if($(this).val()==username){
+                            $(this).attr('selected',true);
+                        }
+                    });
+                }
+                form.render('select');
+            });
+        },
+
 
     };
 

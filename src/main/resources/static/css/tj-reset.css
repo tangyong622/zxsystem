@@ -1,0 +1,161 @@
+/* 通用样式 */
+/* * {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  font-family: Century Gothic, sans-serif;
+  color: #34495e;
+  background-color: #f6f6f6;
+  font-size: 12px;
+}
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+} */
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  background-color: #eee;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+button,
+input,
+textarea {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+em {
+  font-style: normal;
+}
+/* 通用的工具样式 */
+.kxz-tj {
+  padding: 0 13px 17px;
+}
+.kxz-tj .fl {
+  float: left;
+}
+.kxz-tj .fr {
+  float: right;
+}
+.kxz-tj .pt20 {
+  padding-top: 20px !important;
+}
+.kxz-tj .ml10 {
+  margin-left: 10px !important;
+}
+.kxz-tj .mb10 {
+  margin-bottom: 10px !important;
+}
+.kxz-tj .mb17 {
+  margin-bottom: 17px !important;
+}
+.kxz-tj .mr15 {
+  margin-right: 15px !important;
+}
+.mt17 {
+  margin-top: 17px !important;
+}
+.kxz-tj .clear:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+/* 页面中常用的公共样式 */
+.kxz-tj .h2 {
+  padding: 12px 0;
+  color: #999;
+  font-size: 15px;
+}
+.kxz-tj .h3 {
+  padding: 15px 0 13px 20px;
+  font-size: 18px;
+  font-weight: 400;
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
+}
+.kxz-tj .h4 {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.kxz-tj .subBox {
+  padding: 18px 25px;
+  background-color: #fff;
+}
+.kxz-tj .subPart {
+  padding: 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+.kxz-tj .laydateBox {
+  display: inline-block;
+  width: 250px;
+  vertical-align: middle;
+}
+.kxz-tj .layui-table th,
+.kxz-tj .layui-table td {
+  text-align: center;
+}
+
+.kxz-tj .tbBox {
+  position: absolute;
+  left: 1%;
+  right: 3%;
+  bottom: 3%;
+}
+.kxz-tj .tb {
+  width: 100%;
+  border-top: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+  table-layout: fixed;
+}
+
+.kxz-tj .tb td {
+  line-height: 30px;
+  text-align: center;
+  font-size: 12px;
+  border-right: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+.kxz-tj .tb .personnel {
+  display: inline-block;
+  width: 14px !important;
+  height: 8px !important;
+  margin-right: 6px;
+  transform: translateY(-1px);
+  vertical-align: middle;
+  background-color: #2d8cf0;
+}
+.kxz-tj .searchBox .layui-btn{
+  color: #555!important;
+  background-color: #fff!important;
+  border:1px solid;
+}
+.kxz-tj .searchBox .layui-btn:hover{
+  color: #fff!important;
+  background-color: #2d8cf0!important;
+  border:1px solid #2d8cf0;
+}
+.kxz-tj .searchBox .layui-btn.active{
+  color: #fff!important;
+  background-color: #2d8cf0!important;
+  border:1px solid #2d8cf0;
+}

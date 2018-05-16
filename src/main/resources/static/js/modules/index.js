@@ -39,20 +39,7 @@ layui.config({
         }
     }
 
-    /**
-     * 初始化首页内容加载
-     */
-    function initHome() {
-        // 获取点击菜单上的链接
-        var $layui_nav_one = $('.layui-nav-tree').children()[0],
-            one_url = $($layui_nav_one).children().data().url;
-        if (one_url !== "") {
-            ajaxhtml(one_url);
-        }
-    };
-
     function ajaxhtml(url) {
-        console.log(url)
         $layui_body_container = $('.layui-body-container')
         $layui_body_container.html("");
         if (url === "" || undefined) return;

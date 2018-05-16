@@ -4,20 +4,21 @@
 
     <!--查看总数-->
     <select id="findListCount" resultType="Integer">
-        SELECT COUNT(0) FROM category WHERE delFlag != '0'
+        SELECT COUNT(0) FROM category WHERE delFlag != '1'
     </select>
 
     <!--查看列表-->
     <select id="findList" resultType="com.zx.system.entity.Category">
         SELECT id,name,sort,remark FROM category
-        WHERE delFlag != '0'
+        WHERE delFlag != '1'
         ORDER BY sort
+        LIMIT #{page},#{limit}
     </select>
 
     <!--检查是否存在-->
     <select id="checkExist" resultType="Integer">
         SELECT COUNT(0) FROM category
-        WHERE delFlag != '0'
+        WHERE delFlag != '1'
         <if test="id != null and id != ''">
             AND id != #{id}
         </if>
@@ -40,7 +41,7 @@
     <!--检查是否存在课时-->
     <select id="checkHas" resultType="Integer">
         SELECT COUNT(a.id) FROM first_title a
-        WHERE a.delFlag != '0'
+        WHERE a.delFlag != '1'
         AND a.categoryId = #{id}
     </select>
 

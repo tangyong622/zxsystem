@@ -1,0 +1,330 @@
+/* 新员工试用期满-同级考核 */
+.sheet__line {
+    border-top: 1px solid #444;
+    border-left: 1px solid #444;
+}
+
+.sheet__line__item {
+    box-sizing: border-box;
+    float: left;
+    width: 25%;
+    line-height: 30px;
+    height:30px;
+    border-right: 1px solid #444;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+.sheet__line__item input {
+    font-size: 14px;
+    line-height: 25px;
+    transform: translateY(2px);
+}
+
+.sheet__content__column {
+    box-sizing: border-box;
+    float: left;
+    width: 25%;
+    border-right: 1px solid #444;
+    text-align: center;
+
+}
+
+.sheet__content__column h2 {
+    box-sizing: border-box;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    border-bottom: 1px solid #444;
+}
+
+.sheet__content__column.c1 {
+    width: 60px;
+    height: 1097px;
+    border-left: 1px solid #444;
+    border-bottom: 1px solid #444;
+}
+
+.sheet__content__column.c1 h2 {
+    position: relative;
+    background: #444;
+    border-bottom: none;
+}
+
+.sheet__content__column.c1 .triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.sheet__content__column.c1 .text {
+    position: absolute;
+    width: 30px;
+    font-size: 12px;
+}
+
+.sheet__content__column.c1 .triangle.tr {
+    top: 0;
+    right: 0;
+    border-top: 38px solid #fff;
+    border-left: 58px solid transparent;
+}
+
+.sheet__content__column.c1 .triangle.bl {
+    bottom: 1px;
+    left: 0;
+    border-bottom: 38px solid #fff;
+    border-right: 58px solid transparent;
+}
+
+.sheet__content__column.c1 .tr .text {
+    right: 0;
+    bottom: 8px;
+}
+
+.sheet__content__column.c1 .bl .text {
+    top: 8px;
+    left: 0;
+}
+
+.sheet__content__column.c1 .bottom {
+    height: calc(100% - 41px);
+}
+
+.sheet__content__column.c1 .bottom::after {
+    display: inline-block;
+    content: "";
+    height: 100%;
+    vertical-align: middle;
+}
+
+.sheet__content__column.c1 .vertical-text {
+    display: inline-block;
+    width: 20px;
+    font-size: 16px;
+    line-height: 60px;
+}
+
+.sheet__content__column.c2 {
+    width: calc(25% - 59px);
+}
+
+.sheet__content__column.c3 {
+    width: calc(25% - .1px);
+}
+
+.sheet__content__column.c4 {
+    width: calc(25% - 1px);
+}
+
+.sheet__content__item {
+    position: relative;
+    border-bottom: 1px solid #444;
+}
+
+.sheet__content__item .top {
+    padding: 8px;
+    text-align: left;
+}
+
+.sheet__content__item .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 24px;
+    border-top: 1px solid #444;
+}
+
+.sheet__content__item label {
+    margin-right: 21px;
+}
+
+.sheet__content__item span {
+    display: inline-block;
+}
+
+.sheet__content__item input {
+    margin-right: 3px;
+}
+
+.sheet__content__item::after {
+    display: inline-block;
+    content: "";
+    height: 100%;
+    vertical-align: middle;
+}
+
+.sheet__content__column .r1 {
+    height: 190px;
+}
+
+.sheet__content__column .r2 {
+    height: 160px;
+}
+
+.sheet__content__column .r3, .sheet__content__column .r4 {
+    height: 130px;
+}
+
+.sheet__content__column .r5 {
+    height: 180px;
+}
+
+.sheet__content__column .r6 {
+    height: 110px;
+}
+
+.sheet__content__column .r7 {
+    height: 150px;
+}
+
+.sheet__footer {
+    border: 1px solid #444;
+    border-top: none;
+}
+
+.sheet__footer .grade {
+    padding-left: 15px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+#sumGrade {
+    width: 85px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #444;
+}
+
+.sheet__footer .sign {
+    text-align: right;
+    line-height: 40px;
+    padding-right: 15px;
+}
+
+.signLabel {
+    padding-right: 150px;
+}
+
+.sign {
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+}
+
+.signinput {
+    height: 30px;
+    width: 200px;
+    border: 0;
+    padding: 3px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.date {
+    height: 30px;
+    text-align: right;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.yearinput,
+.monthinput,
+.dayinput {
+    width: 60px;
+    height: 30px;
+    padding: 3px;
+    border: 0;
+    box-sizing: border-box;
+    background-color: transparent;
+    text-align: right;
+}
+
+.head {
+    width: 926px;
+    padding: 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.logo {
+    padding: 10px 40px;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%
+}
+
+td {
+    border: 1px solid #000;
+    width: 154px;
+    text-align: center;
+}
+
+input{
+    text-align: center;
+}
+
+.input2 {
+    border-bottom: 1px solid
+}
+
+.input3 {
+    border: 1px solid #d8d8da;
+    font-size: 16px;
+}
+
+.part {
+    height: 100px;
+    width: 846px;
+    border: 1px solid #000;
+    border-bottom: none
+}
+
+.part-left {
+    height: 100px;
+    width: 60px;
+    float: left;
+    border-right: 1px solid #000;
+}
+
+.part-left-div {
+    margin: 0 auto;
+    line-height: 24px;
+    font-size: 14px;
+    width: 14px;
+}
+
+.part-right {
+    height: 100px;
+    width: 785px;
+    float: left;
+}
+
+.part-right-div {
+    height: 50px;
+    width: 785px;
+    border-bottom: 1px solid #000;
+    line-height: 50px;
+}
+
+.part-right-div2 {
+    height: 50px;
+    width: 785px;
+}
+
+.part-right2 {
+    height: 100px;
+    width: 360px;
+    float: left;
+}
+
+textarea {
+    border: 1px solid #d8d8da
+}
+
+

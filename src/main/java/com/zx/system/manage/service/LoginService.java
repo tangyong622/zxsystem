@@ -18,18 +18,14 @@ public class LoginService {
     @Autowired
     private LoginMapper loginMapper;
 
-
     //登录请求
-    public JsonResult doLogin(String loginname, String password) {
-
-        String pawDES = MD5Tools.getSHA256StrJava(password);
+    public SysUser doLogin(String loginname, String password) {
         //查询用户
-        SysUser sysUser = loginMapper.getUser(loginname,pawDES);
-        if(sysUser == null){
-            return new JsonResult(400,"用户名或密码错误");
+        SysUser sysUser = loginMapper.getUser(loginname,password);
+        if(sysUser != null){
+            SessionUtil.setSessionAttribute(Constant.LOGIN_USER,sysUser);
+            SessionUtil.setSessionAttribute(Constant.LOGIN_USER_ID,sysUser.getId());
         }
-        SessionUtil.setSessionAttribute(Constant.LOGIN_USER,sysUser);
-        SessionUtil.setSessionAttribute(Constant.LOGIN_USER_ID,sysUser.getId());
-        return new JsonResult(0,"登录成功");
+        return sysUser;
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Administrator on 2018/5/13/013.
  */
 @Controller
-@RequestMapping("/manage/course/category")
+@RequestMapping("/manage/category")
 public class CategoryController {
 
     @Autowired

@@ -49,7 +49,7 @@ public class FileloadController {
                 out.flush();
                 out.close();
                 if (StringUtils.equals("flv", FileUtil.getType(fName))) {
-                    return new JsonResult(0, Constant.UPLOAD_PATH_ORIGINAL + resumeurl);
+                    return new JsonResult(Constant.UPLOAD_PATH_ORIGINAL + resumeurl);
                 }
                 return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL + resumeurl, Constant.VIDEO_FFMPEG);
             } catch (FileNotFoundException e) {

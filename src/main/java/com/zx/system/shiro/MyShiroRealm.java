@@ -1,8 +1,9 @@
 package com.zx.system.shiro;
 
 import com.zx.system.entity.SysUser;
-import com.zx.system.mapper.LoginMapper;
+import com.zx.system.manage.service.LoginService;
 import com.zx.system.util.MD5Tools;
+import com.zx.system.util.SessionUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -27,7 +28,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
 
     @Autowired
-    private LoginMapper loginMapper;
+    private LoginService loginService;
 
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
@@ -42,12 +43,10 @@ public class MyShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String name = token.getUsername();
         String password = String.valueOf(token.getPassword());
-
-//        密码进行加密处理  明文为  password
+        //密码进行加密处理  明文为  password
         String pawDES = MD5Tools.getSHA256StrJava(password);
-
-        // 从数据库获取对应用户名密码的用户
-        SysUser systemUser = loginMapper.getUser(name, pawDES);
+        //从数据库获取对应用户名密码的用户
+        SysUser systemUser = loginService.doLogin(name, pawDES);
         if (systemUser == null) {
             throw new AccountException("帐号或密码不正确！");
         }
