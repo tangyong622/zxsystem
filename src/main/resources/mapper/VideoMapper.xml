@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.system.mapper.VideoMapper">
+
+    <!--查看列表-->
+    <select id="get" resultType="com.zx.system.entity.Video">
+        SELECT bigImg,img,url FROM video WHERE id = #{id}
+    </select>
+
+    <!--查看总数-->
+    <select id="findListCount" resultType="Integer">
+        SELECT COUNT(0) FROM video a
+        LEFT JOIN v_category d ON a.categoryId = d.id
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND d.allPid LIKE concat('%',#{categoryId},'%')
+        </if>
+        <if test="title != null and title != ''">
+            AND a.title LIKE concat('%',#{title},'%')
+        </if>
+    </select>
+
+    <!--查看列表-->
+    <select id="findList" resultType="com.zx.system.entity.Video">
+        SELECT a.id,a.title,a.`describe`,a.bigImg,a.img,a.isEdu,a.isHead,a.url,a.sort,a.remark,a.categoryId,d.name,d.pname
+        FROM video a
+        LEFT JOIN v_category d ON a.categoryId = d.id
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND d.allPid LIKE concat('%',#{categoryId},'%')
+        </if>
+        <if test="title != null and title != ''">
+            AND a.title LIKE concat('%',#{title},'%')
+        </if>
+        LIMIT #{page},#{limit}
+    </select>
+
+    <insert id="insert">
+        insert into video (id,title,categoryId,`describe`,bigImg,img,isEdu,isHead,url,sort,remark,delFlag,addUserId,addTime)
+        values (#{id},#{title},#{categoryId},#{describe},#{bigImg},#{img},#{isEdu},#{isHead},#{url},#{sort},#{remark},#{delFlag},#{addUserId},#{addTime});
+    </insert>
+
+    <update id="update">
+        update video set
+        title = #{title},
+        categoryId = #{categoryId},
+        `describe` = #{describe},
+        bigImg = #{bigImg},
+        img = #{img},
+        isEdu = #{isEdu},
+        isHead = #{isHead},
+        url = #{url},
+        sort = #{sort},
+        remark = #{remark},
+        updUserId = #{updUserId},
+        updTime = #{updTime}
+        where id = #{id};
+    </update>
+
+    <!--删除章节-->
+    <update id="delete">
+        UPDATE video set delFlag = 1 WHERE id = #{id}
+    </update>
+
+
+</mapper>

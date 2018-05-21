@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.system.mapper.UserMapper">
+
+    <!--查看总数-->
+    <select id="findListCount" resultType="Integer">
+        SELECT COUNT(0) FROM `user`
+        WHERE delFlag != '1'
+        <if test="startTime != null and startTime !=''">
+            AND DATE_FORMAT(logintime, '%Y-%m-%d') &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime !=''">
+            AND DATE_FORMAT(logintime, '%Y-%m-%d') &lt;= #{endTime}
+        </if>
+    </select>
+
+    <!--查看列表-->
+    <select id="findList" resultType="com.zx.system.entity.User">
+        SELECT a.id,a.loginname,a.username,a.phone,a.office,a.headphoto,a.eduNo,a.sex,
+        DATE_FORMAT(a.logintime, '%Y-%m-%d %H:%i:%s') logintime
+        FROM `user` a
+        WHERE a.delFlag != '1'
+        <if test="startTime != null and startTime !=''">
+            AND DATE_FORMAT(a.logintime, '%Y-%m-%d') &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime !=''">
+            AND DATE_FORMAT(a.logintime, '%Y-%m-%d') &lt;= #{endTime}
+        </if>
+        ORDER BY a.logintime DESC,a.addtime DESC
+        LIMIT #{page},#{limit}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO `user` (id,loginname,password,username,phone,office,headphoto,eduNo,sex,delFlag,addUserId,addTime)
+        VALUE (#{id},#{loginname},#{password},#{username},#{phone},#{office},#{headphoto},#{eduNo},#{sex},#{delFlag},#{addUserId},#{addTime})
+    </insert>
+
+    <update id="update">
+        UPDATE `user`
+         <set>
+             <if test="loginname != null and loginname != '' ">
+                 loginname = #{loginname},
+             </if>
+             <if test="password != null and password != '' ">
+                 password = #{password},
+             </if>
+             <if test="username != null and username != '' ">
+                 username = #{username},
+             </if>
+             <if test="phone != null and phone != '' ">
+                 phone = #{phone},
+             </if>
+             <if test="office != null and office != '' ">
+                 office = #{office},
+             </if>
+             <if test="headphoto != null and headphoto != '' ">
+                 headphoto = #{headphoto},
+             </if>
+             <if test="eduNo != null and eduNo != '' ">
+                 eduNo = #{eduNo},
+             </if>
+             <if test="sex != null and sex != '' ">
+                 sex = #{sex},
+             </if>
+             <if test="updTime != null and updTime != '' ">
+                 updTime = #{updTime},
+             </if>
+             <if test="updUserId != null and updUserId != '' ">
+                 updUserId = #{updUserId}
+             </if>
+         </set>
+            WHERE id = #{id}
+    </update>
+
+    <!--登录-->
+    <select id="doLogin" resultType="com.zx.system.entity.User">
+        SELECT * FROM `user` WHERE loginname = #{loginname} AND password = #{password}
+    </select>
+
+
+</mapper>
