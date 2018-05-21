@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Created by Administrator on 2018/3/16.
  */
 @Data
-public class Entity implements Serializable{
+public class Entity {
 
     private String id;
     private String delFlag;

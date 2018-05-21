@@ -25,10 +25,10 @@ import java.util.Random;
 public class FileloadController {
 
 
-    //上传
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    //上传视频
+    @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult upload(@RequestParam("file") MultipartFile file) {
+    public JsonResult uploadVideo(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             String resumeurl = "";
             try {
@@ -40,18 +40,58 @@ public class FileloadController {
                 }
                 String path = String.valueOf(new Random().nextInt(100)).concat((fName));//拼接新文件名
                 resumeurl = String.valueOf(new Date().getTime()).concat(path);
-                File f = new File(Constant.UPLOAD_PATH_ORIGINAL);
+                File f = new File("static/video/");
                 if (!f.exists()) {
                     f.mkdirs();
                 }
-                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(Constant.UPLOAD_PATH_ORIGINAL + new File(resumeurl)));
+                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("static/video/" + new File(resumeurl)));
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                if (StringUtils.equals("flv", FileUtil.getType(fName))) {
-                    return new JsonResult(Constant.UPLOAD_PATH_ORIGINAL + resumeurl);
+                return new JsonResult("/video/" + resumeurl);
+//                if (StringUtils.equals("flv", FileUtil.getType(fName))) {
+//                    return new JsonResult("/video/" + resumeurl);
+//                }
+//                return ConvertVideo.getRun("static/video/" + resumeurl, Constant.VIDEO_FFMPEG);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
+            }
+        } else {
+            return new JsonResult(400, "", "上传失败，因为文件是空的.", 0);
+        }
+    }
+
+    //上传图片文件
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult uploadFile(@RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            String resumeurl = "";
+            try {
+                //重新生成文件名，避免乱码问题
+                String filename = file.getOriginalFilename();
+                String fName = null;
+                if (filename.indexOf(".") >= 0) {
+                    fName = filename.substring(filename.lastIndexOf("."), filename.length());
                 }
-                return ConvertVideo.getRun(Constant.UPLOAD_PATH_ORIGINAL + resumeurl, Constant.VIDEO_FFMPEG);
+                String path = String.valueOf(new Random().nextInt(100)).concat((fName));//拼接新文件名
+                resumeurl = String.valueOf(new Date().getTime()).concat(path);
+                File f = new File("static/file/");
+                if (!f.exists()) {
+                    f.mkdirs();
+                }
+                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("static/file/" + new File(resumeurl)));
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+                return new JsonResult("/file/"  + resumeurl);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
@@ -71,10 +111,7 @@ public class FileloadController {
     @RequestMapping(value = "/fileDelete", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult fileDelete(String path) {
-        if (!path.contains(Constant.UPLOAD_PATH_ORIGINAL)) {
-            return new JsonResult(400, "文件路劲不合法");
-        }
-        FileUtil.delFile(path);
+        FileUtil.delFile("static/"+path);
         return new JsonResult(0, "删除成功");
     }
 

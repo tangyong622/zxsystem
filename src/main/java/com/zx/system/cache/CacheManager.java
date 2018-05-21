@@ -25,11 +25,19 @@ public class CacheManager {
     }
 
     /**
-     *  载入缓存信息
+     *  载入缓存信息（默认3天）
      */
     public static void putCacheInfo(String key, Object obj) {
 
         cacheMap.put(key, new Cache(key,obj));
+    }
+
+    /**
+     *  载入缓存信息
+     */
+    public static void putCacheInfo(String key, Object obj, long timeOut) {
+
+        cacheMap.put(key, new Cache(key,obj,timeOut));
     }
 
     /**

@@ -1,5 +1,8 @@
 package com.zx.system.mapper;
 
+
+import com.zx.system.entity.Video;
+
 import java.util.List;
 
 /**
@@ -21,4 +24,8 @@ public interface Mapper {
 
     //删除
     Integer delete(String id);
+
+    int checkExist(Object o);
+
+    Video get(String id);
 }

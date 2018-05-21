@@ -16,8 +16,10 @@ public class Constant {
     //视频转码器
     public final static String VIDEO_FFMPEG = "ffmpeg\\";
 
-    //存储原视频文件地址
-    public final static String UPLOAD_PATH_ORIGINAL = "static\\original\\";
+/*    //存储视频文件地址
+    public final static String UPLOAD_PATH_ORIGINAL = "static/video/";
 
+    //存储图片/文件地址
+    public final static String UPLOAD_PATH_FILE = "static/file/";*/
 
 }

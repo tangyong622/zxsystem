@@ -1,7 +1,7 @@
 layui.config({
     version: false,
     debug: false,
-    base: 'js/modules/'
+    base: '/js/modules/'
 }).use(['element', 'layer'], function () {
     var element = layui.element,
         $ = layui.$;

@@ -2,16 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zx.system.mapper.CategoryMapper">
 
+    <!--所有分类-->
+    <select id="findListAll" resultType="com.zx.system.entity.Category">
+        SELECT id,name,pid FROM category
+        WHERE delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND id = #{categoryId}
+        </if>
+        ORDER BY sort
+    </select>
+
     <!--查看总数-->
     <select id="findListCount" resultType="Integer">
-        SELECT COUNT(0) FROM category WHERE delFlag != '1'
+        SELECT COUNT(a.id) FROM category a
+        LEFT JOIN category b ON a.pid = b.id
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND a.pid = #{categoryId} OR b.pid = #{categoryId}
+        </if>
     </select>
 
     <!--查看列表-->
     <select id="findList" resultType="com.zx.system.entity.Category">
-        SELECT id,name,sort,remark FROM category
-        WHERE delFlag != '1'
-        ORDER BY sort
+        SELECT a.id,a.name,a.sort,a.remark,concat(ifnull(c.name,''),'>',ifnull(b.name,'')) pname,a.pid,b.name parentName
+        FROM category a
+        LEFT JOIN category b ON a.pid = b.id
+        LEFT JOIN category c ON b.pid = c.id
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND a.pid = #{categoryId} OR b.pid = #{categoryId}
+        </if>
+        ORDER BY a.sort
         LIMIT #{page},#{limit}
     </select>
 
@@ -26,21 +47,31 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO category (id,name,sort,remark,delFlag,addUserId,addTime)
-        VALUE (#{id},#{name},#{sort},#{remark},#{delFlag},#{addUserId},#{addTime})
+        INSERT INTO category (id,name,pid,sort,remark,delFlag,addUserId,addTime)
+        VALUE (#{id},#{name},#{pid},#{sort},#{remark},#{delFlag},#{addUserId},#{addTime})
     </insert>
 
     <update id="update">
         UPDATE category SET
         name = #{name},
+        pid = #{pid},
         sort = #{sort},
-        remark = #{remark}
+        remark = #{remark},
+        updUserId = #{updUserId},
+        updTime = #{updTime}
         WHERE id = #{id}
     </update>
 
     <!--检查是否存在课时-->
     <select id="checkHas" resultType="Integer">
-        SELECT COUNT(a.id) FROM first_title a
+        SELECT COUNT(a.id) FROM category a
+        WHERE a.delFlag != '1'
+        AND a.pid = #{id}
+    </select>
+
+    <!--检查是否存在课时-->
+    <select id="checkHasVideo" resultType="Integer">
+        SELECT COUNT(a.id) FROM video a
         WHERE a.delFlag != '1'
         AND a.categoryId = #{id}
     </select>

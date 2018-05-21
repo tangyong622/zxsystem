@@ -1,9 +1,8 @@
 package com.zx.system.shiro;
 
 import com.zx.system.entity.SysUser;
-import com.zx.system.manage.service.LoginService;
+import com.zx.system.service.LoginService;
 import com.zx.system.util.MD5Tools;
-import com.zx.system.util.SessionUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

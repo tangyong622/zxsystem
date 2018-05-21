@@ -177,7 +177,7 @@ public class ConvertVideo {
             videoProcess.waitFor();
             FileUtil.delFile(inputPath);
             FileUtil.delFile(oldfilepath);
-            return new JsonResult(0,outurl,"上传成功",0);
+            return new JsonResult(0,outurl.replace("static",""),"上传成功",0);
         } catch (Exception e) {
             e.printStackTrace();
             return new JsonResult(400,"上传压缩失败");

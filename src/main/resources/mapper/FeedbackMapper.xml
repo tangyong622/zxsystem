@@ -5,12 +5,12 @@
     <!--查看总数-->
     <select id="findListCount" resultType="Integer">
         SELECT COUNT(0) FROM feedback
-        WHERE delFlag != '0'
+        WHERE delFlag != '1'
         <if test="startTime != null and startTime !=''">
-            AND addTime &gt; #{startTime}
+            AND DATE_FORMAT(addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>
         <if test="endTime != null and endTime !=''">
-            AND endTime &lt; #{endTime}
+            AND DATE_FORMAT(addTime, '%Y-%m-%d') &lt;= #{endTime}
         </if>
     </select>
 
@@ -19,12 +19,12 @@
         SELECT a.id,b.username,a.view,DATE_FORMAT(a.addTime, '%Y-%m-%d %H:%i:%s') addTime
         FROM feedback a
         LEFT JOIN sys_user b ON a.userId = b.id
-        WHERE a.delFlag != '0'
+        WHERE a.delFlag != '1'
         <if test="startTime != null and startTime !=''">
-            AND a.addTime &gt; #{startTime}
+            AND DATE_FORMAT(a.addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>
         <if test="endTime != null and endTime !=''">
-            AND a.addTime &lt; #{endTime}
+            AND DATE_FORMAT(a.addTime, '%Y-%m-%d') &lt;= #{endTime}
         </if>
         ORDER BY a.addTime DESC
         LIMIT #{page},#{limit}

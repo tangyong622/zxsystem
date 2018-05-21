@@ -8,12 +8,39 @@
 <div class="layui-btn-add">
     <button class="layui-btn" id="add">添加分类</button>
 </div>
+<div class="layui-form-search layui-row layui-top">
+    <form class="layui-form layui-col-md12" >
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md3">
+                <label class="layui-form-label">上级分类：</label>
+                <div class="layui-input-inline" style="width: 190px;position: relative">
+                    <input type="text" class="layui-input" style="width: 190px;" id="categoryName"
+                           readonly="readonly">
+                    <span class="department-x">X</span>
+                    <input type="hidden" class="layui-input" id="categoryId" name="categoryId">
+                    <ul class="department" style="width:188px;" id="categorySearch"></ul>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <label class="layui-form-label">标题：</label>
+                <div class="layui-inline">
+                    <input name="title"  class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-col-md1">
+                <button class="layui-btn" lay-submit lay-filter="search">查询</button>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="layui-table-fulltimelist" style="margin-top:0px;">
     <table class="layui-hide" id="category-manage" lay-filter="category"></table>
 </div>
 <script type="text/html" id="operation">
+    {{# if(d.id != '1'){ }}
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+    {{# } }}
 </script>
 <script type="text/html" id="addHtml">
     <form class="layui-form">
@@ -24,6 +51,15 @@
                     <input type="text" class="layui-input" lay-verify="required" name="name"
                            placeholder="请填写名称">
                 </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级分类：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" style="width: 190px;" id="pname" name="pname"
+                       readonly="readonly">
+                <input type="hidden" class="layui-input" id="pid" name="pid">
+                <ul class="department" id="pSearch" style="width: 188px"></ul>
             </div>
         </div>
         <div class="layui-form-item">
@@ -61,6 +97,15 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">上级分类：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" style="width: 190px;" id="pname" name="pname"
+                       readonly="readonly" value="{{ d.parentName }}">
+                <input type="hidden" class="layui-input" id="pid" name="pid" value="{{ d.pid }}">
+                <ul class="department" id="pSearch" style="width: 188px"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">排序：</label>
                 <div class="layui-input-inline">
@@ -85,7 +130,7 @@
     </form>
 </script>
 <script>
-    layui.use(['form', 'table', 'layer', 'laytpl'], function () {
+    layui.use(['form', 'table', 'layer', 'laytpl','tree'], function () {
         var form = layui.form,
             table = layui.table,
             layer = layui.layer,
@@ -95,6 +140,28 @@
             sort: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
         });
 
+        $("#categoryName").on('click', function () {
+            $("#categorySearch").toggle();
+        })
+
+        $(".department-x").on('click', function () {
+            $("#categorySearch").hide();
+            $("#categoryName").val("");
+            $("#categoryId").val("");
+        })
+
+        $.post("/manage/category/list", {}, function (result) {
+            layui.tree({
+                elem: '#categorySearch',
+                nodes: result.data,
+                click: function (node) {
+                    $("#categorySearch").hide();
+                    $("#categoryName").val(node.name);
+                    $("#categoryId").val(node.id);
+                }
+            });
+        })
+
         //  初始化分类管理列表
         var categorytable = table.render({
             elem: '#category-manage',
@@ -102,10 +169,11 @@
             page: 'true',
             limit:'10',
             cols: [[
-                {field: 'name', title: '模板名称'},
-                {field: 'sort', title: '排序'},
-                {field: 'remark', title: '备注'},
-                {title: '操作',width: 200, align: 'center', toolbar: '#operation'}
+                {field: 'pname',width:200, title: '上级名称'},
+                {field: 'name',width:200, title: '名称'},
+                {field: 'remark',width:400,title: '备注'},
+                {field: 'sort', width:80,title: '排序'},
+                {title: '操作',fixed: 'right',width: 200, align: 'center', toolbar: '#operation'}
             ]]
         });
 
@@ -116,12 +184,12 @@
                     btn: ['确定', '取消']
                 }, function () {
                     var params = {
-                        id: id,
+                        id: data.id,
                         status: 6
                     };
                     $.post('/manage/category/delete', {id: data.id}, function (res) {
                         if (res.code === 0) {
-                            obj.del();
+                            categorytable.reload();
                             layer.msg('删除信息成功！')
                         } else {
                             layer.msg(res.msg);
@@ -140,6 +208,22 @@
                         area: ['400px', '400px']
                     });
                 });
+
+                $("#pname").on('click', function () {
+                    $("#pSearch").toggle();
+                })
+
+                $.post("/manage/category/list", {}, function (result) {
+                    layui.tree({
+                        elem: '#pSearch',
+                        nodes: result.data,
+                        click: function (node) {
+                            $("#pSearch").hide();
+                            $("#pname").val(node.name);
+                            $("#pid").val(node.id);
+                        }
+                    });
+                })
 
                 form.on('submit(entry)', function (obj) {
                     var params = obj.field;
@@ -185,12 +269,36 @@
                 });
                 return false;
             })
+
+            $("#pname").on('click', function () {
+                $("#pSearch").toggle();
+            })
+
+            $.post("/manage/category/list", {}, function (result) {
+                layui.tree({
+                    elem: '#pSearch',
+                    nodes: result.data,
+                    click: function (node) {
+                        $("#pSearch").hide();
+                        $("#pname").val(node.name);
+                        $("#pid").val(node.id);
+                    }
+                });
+            })
+
             $('#cancel').on('click', function (e) {
                 e.preventDefault();
                 layer.closeAll();
             })
             form.render();
         })
+
+        form.on('submit(search)', function (obj) {
+            categorytable.reload({
+                where: obj.field
+            });
+            return false;
+        });
 
     })
 </script>

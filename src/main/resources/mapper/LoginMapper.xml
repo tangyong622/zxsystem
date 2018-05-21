@@ -18,7 +18,9 @@
         UPDATE sys_user SET
             password = #{password},
             updTime = #{updTime},
-            updUserId = #{updUserId}
+            updUserId = #{updUserId},
+            updUserId = #{updUserId},
+            updTime = #{updTime}
         WHERE id = #{id}
     </update>
 
