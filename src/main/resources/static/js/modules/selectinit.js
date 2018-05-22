@@ -5,7 +5,7 @@ layui.define('layer', function (exports) {
         options: function (data, isall) {
             var optionstr = "<option value=''>请选择</option>";
             for (var i = 0; i < data.length; i++) {
-                var optionone = "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                var optionone = "<option value='" + data[i].id + "'>" + data[i].title + "</option>"
                 optionstr += optionone;
             }
             return optionstr;

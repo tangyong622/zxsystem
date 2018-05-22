@@ -40,20 +40,37 @@ public class ShopUserController {
         }
     }
 
-    //登录请求
+    //获取用户信息
     @RequestMapping(value = "/info",method = RequestMethod.POST)
     public JsonResult doLogin(String token){
 
         return TokenUtils.getCache(token);
     }
 
-    //登录请求
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public JsonResult register(String phone){
-        //发短信
+    //发送注册验证码
+    @RequestMapping(value = "/registerCode",method = RequestMethod.POST)
+    public JsonResult registerCode(String phone){
+        User user = userService.findByPhone(phone);
+        if(user != null){
+            return new JsonResult(400,"该号码已被注册，请确认");
+        }
+        // TODO: 2018/5/21/021 发短信
         long time = (long) (1000 * 60 * 60 * 0.5);
         TokenUtils.setCache(phone,"123456",time);
         return new JsonResult(0,"发送成功");
+    }
+
+    //完善资料
+    @RequestMapping(value = "/perfectInfo",method = RequestMethod.POST)
+    public JsonResult perfectInfo(String phone,String username,String office,String password){
+
+        User user = new User();
+        user.setPhone(phone);
+        user.setLoginname(phone);
+        user.setUsername(username);
+        user.setOffice(office);
+        user.setPassword(password);
+        return userService.form(user);
     }
 
     //验证短信
@@ -61,6 +78,27 @@ public class ShopUserController {
     public JsonResult validate(String phone,String code){
 
         return TokenUtils.validate(phone,code);
+    }
+
+    //发送验证码
+    @RequestMapping(value = "/sendCode",method = RequestMethod.POST)
+    public JsonResult sendCode(String phone){
+        // TODO: 2018/5/21/021 发短信
+        long time = (long) (1000 * 60 * 60 * 0.5);
+        TokenUtils.setCache(phone,"123456",time);
+        return new JsonResult(0,"发送成功");
+    }
+
+
+
+    //忘记密码
+    @RequestMapping(value = "/forgetPwd",method = RequestMethod.POST)
+    public JsonResult forgetPwd(String phone,String code,String password){
+        JsonResult result = TokenUtils.validate(phone,code);
+        if(result.getCode() != 0){
+            return result;
+        }
+        return userService.forgetPwd(phone,password);
     }
 
 }

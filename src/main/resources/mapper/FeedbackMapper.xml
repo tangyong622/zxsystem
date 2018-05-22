@@ -5,7 +5,7 @@
     <!--查看总数-->
     <select id="findListCount" resultType="Integer">
         SELECT COUNT(0) FROM feedback
-        WHERE delFlag != '1'
+        WHERE delFlag != '0'
         <if test="startTime != null and startTime !=''">
             AND DATE_FORMAT(addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>
@@ -19,7 +19,7 @@
         SELECT a.id,b.username,a.view,DATE_FORMAT(a.addTime, '%Y-%m-%d %H:%i:%s') addTime
         FROM feedback a
         LEFT JOIN sys_user b ON a.userId = b.id
-        WHERE a.delFlag != '1'
+        WHERE a.delFlag != '0'
         <if test="startTime != null and startTime !=''">
             AND DATE_FORMAT(a.addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>

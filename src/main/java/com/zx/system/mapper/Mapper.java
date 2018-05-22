@@ -1,14 +1,15 @@
 package com.zx.system.mapper;
 
 
-import com.zx.system.entity.Video;
-
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/1.
  */
 public interface Mapper {
+
+    //课程列表
+    List<Object> findListAll(Object o);
 
     //查看总数
     int findListCount(Object o);
@@ -27,5 +28,5 @@ public interface Mapper {
 
     int checkExist(Object o);
 
-    Video get(String id);
+    Object get(String id);
 }

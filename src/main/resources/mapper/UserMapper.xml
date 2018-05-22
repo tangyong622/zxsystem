@@ -74,7 +74,16 @@
 
     <!--登录-->
     <select id="doLogin" resultType="com.zx.system.entity.User">
-        SELECT * FROM `user` WHERE loginname = #{loginname} AND password = #{password}
+        SELECT * FROM `user` WHERE (loginname = #{loginname} OR phone = #{loginname}) AND password = #{password}
+    </select>
+
+    <update id="forgetPwd">
+        UPDATE `user` SET phone = #{phone} WHERE phone = #{phone}
+    </update>
+
+    <!--根据号码查找用户-->
+    <select id="findByPhone" resultType="com.zx.system.entity.User">
+        SELECT * FROM `user` WHERE loginname = #{phone} OR phone = #{phone}
     </select>
 
 

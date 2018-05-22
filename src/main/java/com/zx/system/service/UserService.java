@@ -67,4 +67,16 @@ public class UserService {
 
         return userMapper.doLogin(loginname,pawDES);
     }
+
+    //忘记密码
+    public JsonResult forgetPwd(String phone, String password) {
+        userMapper.forgetPwd(phone,password);
+        return new JsonResult(0, "修改密码成功");
+    }
+
+    //根据号码查找用户
+    public User findByPhone(String phone) {
+
+        return userMapper.findByPhone(phone);
+    }
 }
