@@ -4,6 +4,7 @@ import com.zx.system.entity.User;
 import com.zx.system.mapper.UserMapper;
 import com.zx.system.util.JsonResult;
 import com.zx.system.util.MD5Tools;
+import com.zx.system.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,17 @@ public class UserService {
 
     //修改用户
     public JsonResult form(User user) {
-        user.update();
-        userMapper.update(user);
-        return new JsonResult(0, "修改用户成功");
+        if(StringUtils.isNotEmpty(user.getPhone()) && userMapper.findByPhone(user.getPhone(),user.getId())!=null){
+            return new JsonResult(400, "该号码已被注册，请确认");
+        }
+        if(StringUtils.isNotEmpty(user.getId())){
+            user.update();
+            userMapper.update(user);
+        }else {
+            user.insert();
+            userMapper.insert(user);
+        }
+        return new JsonResult(0, "操作成功");
     }
 
     //新增用户
@@ -77,6 +86,23 @@ public class UserService {
     //根据号码查找用户
     public User findByPhone(String phone) {
 
-        return userMapper.findByPhone(phone);
+        return userMapper.findByPhone(phone,null);
+    }
+
+    //添加课程
+    public JsonResult addCourse(String id, String courseId) {
+
+        int count = userMapper.getCourse(id,courseId);
+        if(count > 0 ){
+            return new JsonResult(400, "课程已添加，请勿重复添加");
+        }
+        userMapper.addCourse(id,courseId);
+        return new JsonResult(0, "课程添加成功，请在我的课程查看");
+    }
+
+    //查看我的课程
+    public JsonResult getMyCourse(String id) {
+
+        return new JsonResult(userMapper.getMyCourse(id));
     }
 }

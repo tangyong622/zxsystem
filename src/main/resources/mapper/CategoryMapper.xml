@@ -3,8 +3,8 @@
 <mapper namespace="com.zx.system.mapper.CategoryMapper">
 
     <!--所有分类-->
-    <select id="findListAll" resultType="com.zx.system.entity.Category">
-        SELECT id,name FROM category
+    <select id="findListAll" resultType="Map">
+        SELECT id,name,sort FROM category
         WHERE delFlag != '1'
         ORDER BY sort
     </select>

@@ -8,9 +8,6 @@ import java.util.List;
  */
 public interface Mapper {
 
-    //课程列表
-    List<Object> findListAll(Object o);
-
     //查看总数
     int findListCount(Object o);
 

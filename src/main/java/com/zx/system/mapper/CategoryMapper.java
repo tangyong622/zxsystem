@@ -1,10 +1,9 @@
 package com.zx.system.mapper;
 
 import com.zx.system.entity.Category;
-import com.zx.system.entity.SysUser;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,11 +15,9 @@ public interface CategoryMapper extends Mapper{
     Integer checkExist(Category category);
 
     //所有分类
-    List<Category> findListAll(Category category);
+    List<Map> findListAll(Category category);
 
     //检查是否存在课时
     int checkHas(Category category);
 
-    //检查是否存在课时
-    int checkHasVideo(Category category);
 }

@@ -5,7 +5,7 @@
     <!--查看总数-->
     <select id="findListCount" resultType="Integer">
         SELECT COUNT(0) FROM feedback
-        WHERE delFlag != '0'
+        WHERE delFlag != '1'
         <if test="startTime != null and startTime !=''">
             AND DATE_FORMAT(addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>
@@ -18,8 +18,8 @@
     <select id="findList" resultType="com.zx.system.entity.Feedback">
         SELECT a.id,b.username,a.view,DATE_FORMAT(a.addTime, '%Y-%m-%d %H:%i:%s') addTime
         FROM feedback a
-        LEFT JOIN sys_user b ON a.userId = b.id
-        WHERE a.delFlag != '0'
+        LEFT JOIN `user` b ON a.userId = b.id
+        WHERE a.delFlag != '1'
         <if test="startTime != null and startTime !=''">
             AND DATE_FORMAT(a.addTime, '%Y-%m-%d') &gt;= #{startTime}
         </if>
@@ -32,7 +32,7 @@
 
     <insert id="insert">
         INSERT INTO feedback (id,userId,view,delFlag,addUserId,addTime)
-        VALUE (#{id},#{name},#{view},#{delFlag},#{userId},#{addTime})
+        VALUE (#{id},#{userId},#{view},#{delFlag},#{userId},#{addTime})
     </insert>
 
 
