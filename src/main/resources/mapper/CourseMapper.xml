@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.system.mapper.CourseMapper">
+
+    <!--查看列表-->
+    <select id="get" resultType="com.zx.system.entity.Course">
+        SELECT bigImg,img FROM course WHERE id = #{id}
+    </select>
+
+    <!--查看列表-->
+    <select id="findListAll" resultType="Map">
+        SELECT a.id,a.title,a.img,a.sort FROM course a
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND a.categoryId = #{categoryId}
+        </if>
+        ORDER BY a.sort
+    </select>
+
+    <!--查看总数-->
+    <select id="findListCount" resultType="Integer">
+        SELECT COUNT(0) FROM course a
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND a.categoryId = #{categoryId}
+        </if>
+        <if test="title != null and title != ''">
+            AND a.title LIKE concat('%',#{title},'%')
+        </if>
+    </select>
+
+    <!--查看列表-->
+    <select id="findList" resultType="com.zx.system.entity.Course">
+        SELECT a.id,a.title,a.`describe`,a.bigImg,a.img,a.isEdu,a.isHead,a.sort,a.remark,a.categoryId,d.name pname
+        FROM course a
+        LEFT JOIN category d ON a.categoryId = d.id
+        WHERE a.delFlag != '1'
+        <if test="categoryId != null and categoryId != ''">
+            AND a.categoryId = #{categoryId}
+        </if>
+        <if test="title != null and title != ''">
+            AND a.title LIKE concat('%',#{title},'%')
+        </if>
+        LIMIT #{page},#{limit}
+    </select>
+
+    <insert id="insert">
+        insert into course (id,title,categoryId,`describe`,bigImg,img,isEdu,isHead,sort,remark,delFlag,addUserId,addTime)
+        values (#{id},#{title},#{categoryId},#{describe},#{bigImg},#{img},#{isEdu},#{isHead},#{sort},#{remark},#{delFlag},#{addUserId},#{addTime});
+    </insert>
+
+    <update id="update">
+        update course set
+        title = #{title},
+        categoryId = #{categoryId},
+        `describe` = #{describe},
+        bigImg = #{bigImg},
+        img = #{img},
+        isEdu = #{isEdu},
+        isHead = #{isHead},
+        sort = #{sort},
+        remark = #{remark},
+        updUserId = #{updUserId},
+        updTime = #{updTime}
+        where id = #{id};
+    </update>
+
+    <!--删除章节-->
+    <update id="delete">
+        UPDATE course set delFlag = 1 WHERE id = #{id}
+    </update>
+
+    <!--获得章节-->
+    <select id="getChapterList" resultType="Map">
+        SELECT id,name,sort FROM chapter
+        WHERE delFlag != '1' AND courseId = #{id}
+        ORDER BY sort
+    </select>
+
+    <!--获取视频-->
+    <select id="geVideoList" resultType="Map">
+        SELECT id,name,url,sort FROM video
+        WHERE delFlag != '1' AND chapterId = #{id}
+        ORDER BY sort
+    </select>
+
+</mapper>

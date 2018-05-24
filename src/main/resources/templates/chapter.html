@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>章节管理</title>
+</head>
+<body>
+<div class="layui-btn-add">
+    <button class="layui-btn" id="add">添加章节</button>
+</div>
+<div class="layui-form-search layui-row layui-top">
+    <form class="layui-form layui-col-md12" >
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md3">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-inline">
+                    <select name="courseId" id="searchCourse"></select>
+                </div>
+            </div>
+            <div class="layui-col-md1">
+                <button class="layui-btn" lay-submit lay-filter="search">查询</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="layui-table-fulltimelist" style="margin-top:0px;">
+    <table class="layui-hide" id="chapter-manage" lay-filter="chapter"></table>
+</div>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+</script>
+<script type="text/html" id="addHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-input-inline">
+                    <select name="courseId" id="course" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" maxlength="8"
+                           placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="remark" placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script type="text/html" id="editHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name" value="{{d.name}}"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-input-inline">
+                    <select name="courseId" id="course" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" value="{{d.sort}}"
+                           maxlength="8" placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="remark" value="{{d.remark != undefined ? d.remark : ''}}"
+                           placeholder="请填写备注">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['form', 'table', 'layer', 'selectinit','laytpl'], function () {
+        var form = layui.form,
+            table = layui.table,
+            layer = layui.layer,
+            selectinit = layui.selectinit,
+            laytpl = layui.laytpl;
+
+        form.verify({
+            sort: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
+        });
+
+        selectinit.selectoptions($('#searchCourse'),
+            '/manage/course/list', {}, form, null);
+
+        //  初始化分类管理列表
+        var chaptertable = table.render({
+            elem: '#chapter-manage',
+            url: '/manage/chapter/findList',
+            page: 'true',
+            limit:'10',
+            cols: [[
+                {field: 'courseName',width: 200, title: '课程名称'},
+                {field: 'name', width: 300,title: '章节名称'},
+                {field: 'sort', width: 80,title: '排序'},
+                {field: 'remark', width: 600,title: '备注'},
+                {title: '操作',width: 200,fix:'right', align: 'center', toolbar: '#operation'}
+            ]]
+        });
+
+        table.on('tool(chapter)', function (obj) {
+            var data = obj.data;
+            if (obj.event == "delete") {
+                layer.confirm('确定删除该章节？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    var params = {
+                        id: id,
+                        status: 6
+                    };
+                    $.post('/manage/chapter/delete', {id: data.id}, function (res) {
+                        if (res.code === 0) {
+                            obj.del();
+                            layer.msg('删除章节成功！')
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    })
+                }, function () {
+                })
+            }
+            else if (obj.event == "edit") {
+                var editpage = editHtml.innerHTML;
+                laytpl(editpage).render(data, function (html) {
+                    layer.open({
+                        type: 1,
+                        title: '修改章节',
+                        content: html,
+                        area: ['400px', '400px']
+                    });
+                });
+
+                selectinit.selectoptions($('#course'),
+                    '/manage/course/list', {CategoryId:data.categoryId}, form, data.courseId);
+
+                form.on('submit(entry)', function (obj) {
+                    var params = obj.field;
+                    params.id = data.id;
+                    $.post('/manage/chapter/form', params, function (result) {
+                        if (result.code === 0) {
+                            chaptertable.reload();
+                            layer.msg("修改章节成功");
+                            layer.closeAll();
+                        } else {
+                            layer.msg(result.msg);
+                            return false;
+                        }
+                    });
+                    return false;
+                })
+                $('#cancel').on('click', function (e) {
+                    e.preventDefault();
+                    layer.closeAll();
+                })
+                form.render();
+            }
+        })
+
+        $('#add').on('click', function (e) {
+            var addpage = addHtml.innerHTML;
+            var layindex = layer.open({
+                type: 1,
+                title: '添加章节',
+                content: addpage,
+                area: ['400px', '400px']
+            });
+
+            selectinit.selectoptions($('#course'),
+                '/manage/course/list', {}, form, null);
+            form.on('submit(entry)', function (obj) {
+
+                var params = obj.field;
+                $.post('/manage/chapter/form', params, function (result) {
+                    if (result.code === 0) {
+                        chaptertable.reload();
+                        layer.closeAll();
+                    } else {
+                        layer.msg(result.msg);
+                        return false;
+                    }
+                });
+                return false;
+            })
+            $('#cancel').on('click', function (e) {
+                e.preventDefault();
+                layer.closeAll();
+            })
+            form.render();
+        })
+
+        form.on('submit(search)', function (obj) {
+            chaptertable.reload({
+                where: obj.field
+            });
+            return false;
+        });
+
+    })
+</script>
+</body>
+</html>

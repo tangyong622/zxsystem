@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视频管理</title>
+</head>
+<body>
+<div class="layui-btn-add">
+    <button class="layui-btn" id="add">添加视频</button>
+</div>
+<div class="layui-form-search layui-row layui-top">
+    <form class="layui-form layui-col-md12" >
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md3">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-inline">
+                    <select name="courseId" id="searchCourse" lay-filter="searchCourse"></select>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <label class="layui-form-label">章节：</label>
+                <div class="layui-inline">
+                    <select name="chapterId" id="searchChapter"></select>
+                </div>
+            </div>
+            <div class="layui-col-md1">
+                <button class="layui-btn" lay-submit lay-filter="search">查询</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="layui-table-fulltimelist" style="margin-top:0px;">
+    <table class="layui-hide" id="video-manage" lay-filter="video"></table>
+</div>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+</script>
+<script type="text/html" id="addHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-input-inline">
+                    <select name="courseId" id="courseId" lay-filter="searchCourse" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">章节：</label>
+                <div class="layui-input-inline">
+                    <select name="chapterId" id="chapterId" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">视频：</label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn layui-btn-primary"  style='line-height: 20px;'id="video">
+                        <i class="layui-icon"></i>
+                        上传视频
+                    </button>
+                    <div id="videoUrl">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" maxlength="8"
+                           placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script type="text/html" id="editHtml">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">课程：</label>
+                <div class="layui-input-inline">
+                    <select name="courseId" id="courseId" lay-filter="searchCourse" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">章节：</label>
+                <div class="layui-input-inline">
+                    <select name="chapterId" id="chapterId" lay-verify="required"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="name" value="{{d.name}}"
+                           placeholder="请填写名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">视频：</label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn layui-btn-primary"  style='line-height: 20px;'id="video">
+                        <i class="layui-icon"></i>
+                        上传视频
+                    </button>
+                    <div id="videoUrl">
+                        <a style="color: #01AAED" href="{{d.url}}" target="_blank">预览</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="sort" name="sort" value="{{d.sort}}"
+                           maxlength="8" placeholder="请填写排序">
+                </div>
+            </div>
+        </div>
+        <div class="sure-fix">
+            <button class="layui-btn" lay-submit lay-filter="entry">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        </div>
+    </form>
+</script>
+<script type="text/html" id="urlHtml">
+    <a id="url" style="color: #01AAED" href="{{d.url}}" target="_blank">预览</a>
+</script>
+<script>
+    layui.use(['form', 'table', 'layer','selectinit', 'laytpl','upload'], function () {
+        var form = layui.form,
+            table = layui.table,
+            layer = layui.layer,
+            selectinit = layui.selectinit,
+            upload = layui.upload,
+            laytpl = layui.laytpl;
+
+
+        form.verify({
+            sort: [/^([0-9]*[1-9][0-9]*)?$/, '排序请填写正整数字！']
+        });
+
+        selectinit.selectoptions($('#searchCourse'),
+            '/manage/course/list', {}, form, null);
+
+        // 监听类型下拉值，刷新表格数据
+        form.on('select(searchCourse)', function (obj) {
+            selectinit.selectNameOptions($('#searchChapter'),
+                '/manage/chapter/list', {courseId:obj.value}, form, null);
+        });
+
+        //  初始化视频管理列表
+        var videotable = table.render({
+            elem: '#video-manage',
+            url: '/manage/video/findList',
+            page: 'true',
+            limit:'10',
+            cols: [[
+                {field: 'course',width:200, title: '课程'},
+                {field: 'chapter',width:200, title: '章节'},
+                {field: 'name',width:200, title: '名称'},
+                {field: 'url',width:400,title: '视频', templet: '#urlHtml'},
+                {field: 'sort', width:80,title: '排序'},
+                {title: '操作',fixed: 'right',width: 200, align: 'center', toolbar: '#operation'}
+            ]]
+        });
+
+        table.on('tool(video)', function (obj) {
+            var data = obj.data;
+            if (obj.event == "delete") {
+                layer.confirm('确定删除该视频？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    var params = {
+                        id: data.id,
+                        status: 6
+                    };
+                    $.post('/manage/video/delete', {id: data.id,url:data.url}, function (res) {
+                        if (res.code === 0) {
+                            videotable.reload();
+                            layer.msg('删除信息成功！')
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    })
+                }, function () {
+                })
+            }
+            else if (obj.event == "edit") {
+                var editpage = editHtml.innerHTML;
+                laytpl(editpage).render(data, function (html) {
+                    layer.open({
+                        type: 1,
+                        title: '修改视频信息',
+                        content: html,
+                        area: ['400px', '400px']
+                    });
+
+                    var index;
+                    upload.render({
+                        elem: '#video'
+                        ,url: '/file/uploadVideo'
+                        ,accept: 'video' //视频
+                        ,before: function (obj) {
+                            index = layer.load(1, {
+                                shade: [0.1,'#5e5e5e'] //0.1透明度的白色背景
+                            });
+                        }
+                        ,done: function(res){
+                            layer.close(index);
+                            if(res.code == 0){
+                                layer.msg('上传成功');
+                                $("#videoUrl").empty();
+                                $("#videoUrl").append('<a id="url" style="color: #01AAED" href="'+res.data+'" target="_blank">预览</a>')
+                            }
+                        }
+                    });
+
+                    selectinit.selectoptions($('#courseId'),
+                        '/manage/course/list', {}, form, data.courseId);
+
+                    selectinit.selectNameOptions($('#chapterId'),
+                        '/manage/chapter/list', {courseId:data.courseId}, form, data.chapterId);
+
+                    // 监听类型下拉值，刷新表格数据
+                    form.on('select(searchCourse)', function (obj) {
+                        selectinit.selectNameOptions($('#chapterId'),
+                            '/manage/chapter/list', {courseId:obj.value}, form, null);
+                    });
+
+                });
+
+                form.on('submit(entry)', function (obj) {
+                    var params = obj.field;
+                    params.id = data.id;
+                    var url = $("#videoUrl").find('a').attr('href');
+                    if(!url){
+                        layer.msg('请上传视频');
+                        return false;
+                    }
+                    params.url = url;
+                    $.post('/manage/video/form', params, function (result) {
+                        if (result.code === 0) {
+                            videotable.reload();
+                            layer.msg("修改视频成功");
+                            layer.closeAll();
+                        } else {
+                            layer.msg(result.msg);
+                            return false;
+                        }
+                    });
+                    return false;
+                })
+                $('#cancel').on('click', function (e) {
+                    e.preventDefault();
+                    layer.closeAll();
+                })
+                form.render();
+            }
+        })
+
+        $('#add').on('click', function (e) {
+            var addpage = addHtml.innerHTML;
+            var layindex = layer.open({
+                type: 1,
+                title: '添加视频',
+                content: addpage,
+                area: ['400px', '400px']
+            });
+
+            var index;
+
+            upload.render({
+                elem: '#video'
+                ,url: '/file/uploadVideo'
+                ,accept: 'video' //视频
+                ,before: function (obj) {
+                    index = layer.load(1, {
+                        shade: [0.1,'#5e5e5e'] //0.1透明度的白色背景
+                    });
+                }
+                ,done: function(res){
+                    layer.close(index);
+                    if(res.code == 0){
+                        console.log(res.data)
+                        layer.msg('上传成功');
+                        $("#videoUrl").empty();
+                        $("#videoUrl").append('<a id="url" style="color: #01AAED" href="'+res.data+'" target="_blank">预览</a>')
+                    }
+                }
+            });
+
+            selectinit.selectoptions($('#courseId'),
+                '/manage/course/list', {}, form, null);
+
+            // 监听类型下拉值，刷新表格数据
+            form.on('select(searchCourse)', function (obj) {
+                selectinit.selectNameOptions($('#chapterId'),
+                    '/manage/chapter/list', {courseId:obj.value}, form, null);
+            });
+
+            form.on('submit(entry)', function (obj) {
+                var params = obj.field;
+                var url = $("#videoUrl").find('a').attr('href');
+                if(!url){
+                    layer.msg('请上传视频');
+                    return false;
+                }
+                params.url = url;
+                $.post('/manage/video/form', params, function (result) {
+                    if (result.code === 0) {
+                        videotable.reload();
+                        layer.closeAll();
+                    } else {
+                        layer.msg(result.msg);
+                        return false;
+                    }
+                });
+                return false;
+            })
+            $('#cancel').on('click', function (e) {
+                e.preventDefault();
+                layer.closeAll();
+            })
+            form.render();
+        })
+
+        form.on('submit(search)', function (obj) {
+            videotable.reload({
+                where: obj.field
+            });
+            return false;
+        });
+
+
+    })
+</script>
+</body>
+</html>

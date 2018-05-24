@@ -1,15 +1,11 @@
 package com.zx.system.config;
 
-import static com.google.common.base.Predicates.or;
-import static springfox.documentation.builders.PathSelectors.regex;
-
 import com.google.common.base.Predicate;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.system.mapper.ChapterMapper">
+
+    <!--查看列表-->
+    <select id="findListAll" resultType="com.zx.system.entity.Chapter">
+        SELECT a.id,a.name
+        FROM chapter a
+        WHERE a.delFlag != '1' AND a.courseId = #{courseId}
+
+    </select>
+
+    <!--查看总数-->
+    <select id="findListCount" resultType="Integer">
+        SELECT COUNT(0) FROM chapter a
+        LEFT JOIN course b ON a.courseId = b.id
+        WHERE a.delFlag != '1'
+        <if test="courseId != null and courseId != ''">
+            AND a.courseId = #{courseId}
+        </if>
+    </select>
+
+    <!--查看列表-->
+    <select id="findList" resultType="com.zx.system.entity.Chapter">
+        SELECT a.id,a.name,a.sort,a.remark,a.courseId,b.title courseName
+        FROM chapter a
+        LEFT JOIN course b ON a.courseId = b.id
+        WHERE a.delFlag != '1'
+        <if test="courseId != null and courseId != ''">
+            AND a.courseId = #{courseId}
+        </if>
+        ORDER BY a.sort
+        LIMIT #{page},#{limit}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO chapter (id,name,sort,remark,courseId,delFlag,addUserId,addTime)
+        VALUE (#{id},#{name},#{sort},#{remark},#{courseId},#{delFlag},#{addUserId},#{addTime})
+    </insert>
+
+    <update id="update">
+        UPDATE chapter SET
+        name = #{name},
+        sort = #{sort},
+        remark = #{remark},
+        courseId = #{courseId}
+        WHERE id = #{id}
+    </update>
+
+    <!--检查是否存在下级-->
+    <select id="checkHas" resultType="Integer">
+        SELECT COUNT(a.id) FROM video a
+        WHERE a.delFlag != '1'
+        AND a.courseId = #{id}
+    </select>
+
+    <!--删除章节-->
+    <update id="delete">
+        UPDATE chapter SET delFlag = 1 WHERE id = #{id}
+    </update>
+
+
+</mapper>
