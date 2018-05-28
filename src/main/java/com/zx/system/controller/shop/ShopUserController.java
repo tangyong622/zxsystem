@@ -52,7 +52,7 @@ public class ShopUserController {
             Map map = new HashMap();
             map.put("token",token);
             map.put("user",user);
-            return new JsonResult(0, token, "登录成功", 0);
+            return new JsonResult(0, map, "登录成功", 0);
         } catch (Exception e) {
             e.printStackTrace();
             return new JsonResult(400, "用户名或密码错误");
@@ -82,7 +82,7 @@ public class ShopUserController {
             return new JsonResult(400, "该号码已被注册，请确认");
         }
         // TODO: 2018/5/21/021 发短信
-        long time = (long) (1000 * 60 * 60 * 0.5);
+        long time = (long) (1000 * 60 * 5);
         TokenUtils.setCache(phone, "123456", time);
         return new JsonResult(0, "发送成功");
     }
@@ -128,7 +128,7 @@ public class ShopUserController {
     })
     public JsonResult sendCode(String phone) {
         // TODO: 2018/5/21/021 发短信
-        long time = (long) (1000 * 60 * 60 * 0.5);
+        long time = (long) (1000 * 60 * 5);
         TokenUtils.setCache(phone, "123456", time);
         return new JsonResult(0, "发送成功");
     }
@@ -227,6 +227,17 @@ public class ShopUserController {
         updUser.setSex(sex);
         updUser.setOffice(office);
         return userService.form(updUser);
+    }
+
+    //退出登录
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ApiOperation(value = "退出登录", notes = "退出登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", value = "token", required = true, dataType = "String"),
+    })
+    public JsonResult logout(String token){
+        TokenUtils.clearCache(token);
+        return new JsonResult(0,"退出成功");
     }
 
 }

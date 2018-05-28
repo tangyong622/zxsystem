@@ -110,6 +110,6 @@ public class CourseService {
         result.put("bigImg",course.getId());
         result.put("img",course.getId());
         result.put("chapterList",chapterList);
-        return new JsonResult(chapterList);
+        return new JsonResult(result);
     }
 }

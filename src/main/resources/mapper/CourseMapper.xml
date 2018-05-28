@@ -4,7 +4,7 @@
 
     <!--查看列表-->
     <select id="get" resultType="com.zx.system.entity.Course">
-        SELECT bigImg,img FROM course WHERE id = #{id}
+        SELECT id,bigImg,img,`describe` FROM course WHERE id = #{id}
     </select>
 
     <!--查看列表-->

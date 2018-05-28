@@ -48,9 +48,17 @@ public class TokenUtils {
             return new JsonResult(400, "验证码已失效");
         }
         String sendCode = (String)cache.getValue();
-        if(StringUtils.equals(code,sendCode)){
+        if(!StringUtils.equals(code,sendCode)){
             return new JsonResult(400,"验证码错误");
         }
+        //清除原来的
+        CacheManager.clearOnly(phone);
         return new JsonResult(0,"验证码正确");
+    }
+
+    //清楚缓存
+    public static void clearCache(String key) {
+
+        CacheManager.clearOnly(key);
     }
 }

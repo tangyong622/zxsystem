@@ -28,10 +28,10 @@ public class ShopCourseController {
             @ApiImplicitParam(paramType = "query", name = "token", value = "token", required = true, dataType = "String"),
     })
     public JsonResult findList(String token){
-//        JsonResult result = TokenUtils.getCache(token);
-//        if(result.getCode() != 0){
-//            return result;
-//        }
+        JsonResult result = TokenUtils.getCache(token);
+        if(result.getCode() != 0){
+            return result;
+        }
         return courseService.getCourseList();
     }
 
@@ -43,10 +43,10 @@ public class ShopCourseController {
             @ApiImplicitParam(paramType = "query", name = "id", value = "课程id", required = true, dataType = "String"),
     })
     public JsonResult getCourseDetail(String token,String id){
-//        JsonResult result = TokenUtils.getCache(token);
-//        if(result.getCode() != 0){
-//            return result;
-//        }
+        JsonResult result = TokenUtils.getCache(token);
+        if(result.getCode() != 0){
+            return result;
+        }
         return courseService.getCourseDetail(id);
     }
 }
