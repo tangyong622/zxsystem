@@ -116,4 +116,21 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         }
         System.out.println("error");
     }
+
+    public static void main(String[] args) {
+        httpURLConectionGET("https://mws.amazonservices.com/FulfillmentInventory/2010-10-01" +
+                "?Action=ListInventorySupply" +
+                "&Version=2011-03-01" +
+                "&AWSAccessKeyId=AKIAJGUEXAMPLEE2NVUA" +
+                "&MWSAuthToken=amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE" +
+                "&SignatureVersion=2" +
+                "&SignatureMethod=HmacSHA256" +
+                "&Signature=ZRA9DR5rveSuz%2F1D18AHvoipg2BAev8yblPQ1BbEbfU%3D" +
+                "&Timestamp=2010-10-01T02:40:36Z" +
+                "&SellerId=A2NKEXAMPLEF53" +
+                "&SellerSkus.member.1=SampleSKU1" +
+                "&SellerSkus.member.2=SampleSKU2" +
+                "&ResponseGroup=Basic");
+
+    }
 }

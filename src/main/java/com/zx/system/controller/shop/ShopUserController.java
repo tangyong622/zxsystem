@@ -4,10 +4,7 @@ import com.zx.system.entity.Feedback;
 import com.zx.system.entity.User;
 import com.zx.system.service.FeedbackService;
 import com.zx.system.service.UserService;
-import com.zx.system.util.JsonResult;
-import com.zx.system.util.MD5Tools;
-import com.zx.system.util.StringUtils;
-import com.zx.system.util.TokenUtils;
+import com.zx.system.util.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -81,9 +78,7 @@ public class ShopUserController {
         if (user != null) {
             return new JsonResult(400, "该号码已被注册，请确认");
         }
-        // TODO: 2018/5/21/021 发短信
-        long time = (long) (1000 * 60 * 5);
-        TokenUtils.setCache(phone, "123456", time);
+        JuheDemo.sendMsg(phone);
         return new JsonResult(0, "发送成功");
     }
 
@@ -127,9 +122,8 @@ public class ShopUserController {
             @ApiImplicitParam(paramType = "query", name = "phone", value = "手机号", required = true, dataType = "String"),
     })
     public JsonResult sendCode(String phone) {
-        // TODO: 2018/5/21/021 发短信
-        long time = (long) (1000 * 60 * 5);
-        TokenUtils.setCache(phone, "123456", time);
+
+        JuheDemo.sendMsg(phone);
         return new JsonResult(0, "发送成功");
     }
 
