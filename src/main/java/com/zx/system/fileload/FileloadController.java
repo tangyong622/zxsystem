@@ -48,7 +48,7 @@ public class FileloadController {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                return new JsonResult("http://47.98.227.3/upload/video/" + resumeurl);
+                return new JsonResult("http://47.97.199.140/upload/video/" + resumeurl);
 //                if (StringUtils.equals("flv", FileUtil.getType(fName))) {
 //                    return new JsonResult("/video/" + resumeurl);
 //                }
@@ -91,7 +91,7 @@ public class FileloadController {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                return new JsonResult("http://47.98.227.3/upload/file/"  + resumeurl);
+                return new JsonResult("http://47.97.199.140/upload/file/"  + resumeurl);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return new JsonResult(400, 0, "上传失败," + e.getMessage(), 0);
