@@ -21,6 +21,20 @@ public class ShopCourseController {
     @Autowired
     private CourseService courseService;
 
+    //查看首页banner
+    @RequestMapping(value = "/findHeadList",method = RequestMethod.POST)
+    @ApiOperation(value = "查看所有课程", notes = "查看所有课程")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", value = "token", required = true, dataType = "String"),
+    })
+    public JsonResult findHeadList(String token){
+        JsonResult result = TokenUtils.getCache(token);
+        if(result.getCode() != 0){
+            return result;
+        }
+        return courseService.getCourseHeadList();
+    }
+
     //查看课程
     @RequestMapping(value = "/findList",method = RequestMethod.POST)
     @ApiOperation(value = "查看所有课程", notes = "查看所有课程")

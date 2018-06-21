@@ -112,4 +112,10 @@ public class CourseService {
         result.put("chapterList",chapterList);
         return new JsonResult(result);
     }
+
+    //查看首页banner
+    public JsonResult getCourseHeadList() {
+
+        return new JsonResult(courseMapper.getCourseHeadList());
+    }
 }

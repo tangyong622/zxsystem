@@ -41,7 +41,16 @@
         <if test="title != null and title != ''">
             AND a.title LIKE concat('%',#{title},'%')
         </if>
+        ORDER BY a.sort
         LIMIT #{page},#{limit}
+    </select>
+
+    <!--查看首页banner-->
+    <select id="getCourseHeadList" resultType="Map">
+        SELECT a.id,a.title,a.bigImg,a.isHead
+        FROM course a
+        WHERE a.delFlag != '1' AND a.isHead = '1'
+        ORDER BY a.sort
     </select>
 
     <insert id="insert">

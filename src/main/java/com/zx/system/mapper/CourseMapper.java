@@ -19,4 +19,7 @@ public interface CourseMapper extends Mapper {
 
     //获取视频
     List<Map> geVideoList(@Param("id") String id);
+
+    //查看首页banner
+    List<Map> getCourseHeadList();
 }
